@@ -1,0 +1,21 @@
+[
+  {
+    "version": "SAP S/4HANA 2025",
+    "name": "SAP S/4HANA 2025",
+    "product": "SAP S/4HANA",
+    "line": "SAP S/4HANA",
+    "category": "Enterprise Resource Planning",
+    "addOn": "No",
+    "status": "Unrestricted available",
+    "ra_puna": "",
+    "ra_pua": "",
+    "ua": "08.10.2025",
+    "hanaStatus": "",
+    "hanaDate": "",
+    "eomm": "31.12.2032",
+    "eom": "31.12.2035",
+    "eop1": "",
+    "eosk": "",
+    "url": ""
+  }
+]

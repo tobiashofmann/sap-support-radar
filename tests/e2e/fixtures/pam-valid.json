@@ -1,0 +1,40 @@
+[
+  {
+    "version": "TEST PRODUCT A 1.0",
+    "name": "Test Product A 1.0",
+    "product": "TEST PRODUCT A",
+    "line": "Test Product A",
+    "category": "Technology Platform",
+    "addOn": "No",
+    "status": "Unrestricted available",
+    "ra_puna": "",
+    "ra_pua": "",
+    "ua": "01.01.2024",
+    "hanaStatus": "",
+    "hanaDate": "",
+    "eomm": "31.12.2030",
+    "eom": "31.12.2033",
+    "eop1": "",
+    "eosk": "",
+    "url": ""
+  },
+  {
+    "version": "TEST PRODUCT B 2.0",
+    "name": "Test Product B 2.0",
+    "product": "TEST PRODUCT B",
+    "line": "Test Product B",
+    "category": "Technology Platform",
+    "addOn": "No",
+    "status": "Out of maintenance",
+    "ra_puna": "",
+    "ra_pua": "",
+    "ua": "01.01.2015",
+    "hanaStatus": "",
+    "hanaDate": "",
+    "eomm": "31.12.2020",
+    "eom": "31.12.2022",
+    "eop1": "",
+    "eosk": "",
+    "url": ""
+  }
+]

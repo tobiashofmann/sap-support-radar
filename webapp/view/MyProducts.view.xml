@@ -1,0 +1,120 @@
+<mvc:View
+    controllerName="de.itsfullofstars.sap.pam.controller.MyProducts"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="myProductsPage"
+        showHeader="false"
+        class="sapUiResponsiveContentPadding">
+
+        <content>
+            <Title
+                text="{myProducts>/tableTitle}"
+                level="H1"
+                class="pamMainHeading sapUiSmallMarginTop sapUiSmallMarginBottom" />
+
+            <Table
+                id="myProductsTable"
+                width="100%"
+                mode="MultiSelect"
+                includeItemInSelection="true"
+                growing="true"
+                growingThreshold="50"
+                growingScrollToLoad="true"
+                noDataText="{i18n>myProducts.noData}"
+                selectionChange=".onSelectionChange"
+                items="{
+                    path: 'pam>/'
+                }">
+
+                <headerToolbar>
+    <Toolbar>
+        <SearchField
+            id="myProductsSearch"
+            width="22rem"
+            placeholder="{i18n>myProducts.searchPlaceholder}"
+            liveChange=".onSearch"
+            search=".onSearch" />
+
+        <ToolbarSpacer />
+
+        <SegmentedButton
+            id="productScopeFilter"
+            selectedKey="all"
+            selectionChange=".onProductScopeFilterChange"
+            class="sapUiTinyMarginBegin">
+
+            <items>
+                <SegmentedButtonItem
+                    key="all"
+                    text="{i18n>myProducts.scopeAll}" />
+
+                <SegmentedButtonItem
+                    key="own"
+                    text="{i18n>myProducts.scopeOwn}" />
+            </items>
+        </SegmentedButton>
+
+        <Button
+            id="downloadOwnProductsButton"
+            text="{i18n>myProducts.download}"
+            icon="sap-icon://download"
+            visible="{= ${ownProducts>/}.length > 0 }"
+            press=".onDownloadOwnProducts"
+            class="sapUiTinyMarginBegin" />
+
+        <Button
+            id="addProductsButton"
+            text="{i18n>myProducts.add}"
+            icon="sap-icon://add"
+            type="Emphasized"
+            press=".onAddProducts"
+            class="sapUiTinyMarginBegin" />
+
+        <Button
+            id="createProductButton"
+            text="{i18n>myProducts.addProduct}"
+            icon="sap-icon://add-product"
+            press=".onNavigateToAddProduct"
+            class="sapUiTinyMarginBegin" />
+    </Toolbar>
+</headerToolbar>
+
+                <columns>
+                    <Column width="23.3%">
+                        <Text text="{i18n>field.version}" />
+                    </Column>
+
+                    <Column width="30%">
+                        <Text text="{i18n>field.name}" />
+                    </Column>
+
+                    <Column width="23.3%">
+                        <Text text="{i18n>field.product}" />
+                    </Column>
+
+                    <Column width="23.3%">
+                        <Text text="{i18n>field.line}" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem
+                        type="Inactive"
+                        vAlign="Middle">
+
+                        <cells>
+                            <Text text="{pam>version}" />
+                            <Text text="{pam>name}" />
+                            <Text text="{pam>product}" />
+                            <Text text="{pam>line}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

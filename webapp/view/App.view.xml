@@ -1,0 +1,65 @@
+<mvc:View
+    controllerName="de.itsfullofstars.sap.pam.controller.App"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+    <VBox
+        fitContainer="true"
+        height="100%">
+
+        <OverflowToolbar class="pamAppToolbar">
+            <core:Icon
+                src="sap-icon://shield"
+                class="pamAppLogo" />
+
+            <Title
+                text="{i18n>appTitle}"
+                level="H2"
+                class="sapUiTinyMarginEnd" />
+
+            <ToolbarSeparator />
+
+            <ToggleButton
+                text="{i18n>nav.overview}"
+                type="Transparent"
+                pressed="{= ${navigation>/activeRoute} === 'main' }"
+                press=".onNavigateToMain"
+                class="pamNavTab" />
+
+            <ToggleButton
+                text="{i18n>app.supportStatus}"
+                type="Transparent"
+                pressed="{= ${navigation>/activeRoute} === 'supportstatus' }"
+                press=".onNavigateToSupportStatus"
+                class="pamNavTab" />
+
+            <ToggleButton
+                text="{i18n>app.myProducts}"
+                type="Transparent"
+                pressed="{= ${navigation>/activeRoute} === 'myproducts' || ${navigation>/activeRoute} === 'myproductsadd' }"
+                press=".onNavigateToMyProducts"
+                class="pamNavTab" />
+
+            <ToolbarSpacer />
+
+            <Button
+                id="uploadPamButton"
+                text="{i18n>app.uploadPam}"
+                icon="sap-icon://upload"
+                type="Emphasized"
+                press=".onUploadPamJson" />
+
+            <Button
+                id="uploadOwnProductsButton"
+                text="{i18n>app.uploadOwnProducts}"
+                icon="sap-icon://upload"
+                press=".onUploadOwnProducts" />
+        </OverflowToolbar>
+
+        <App
+            id="app"
+            height="100%" />
+    </VBox>
+</mvc:View>

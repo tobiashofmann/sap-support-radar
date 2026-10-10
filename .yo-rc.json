@@ -1,0 +1,22 @@
+{
+  "generator-ui5-ts-app": {
+    "namespace": "de.itsfullofstars.sap.pam",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.152.0",
+    "author": "Tobias Hofmann",
+    "initrepo": true,
+    "tstypes": "@openui5/types",
+    "tstypesVersion": "1.152.0",
+    "appId": "de.itsfullofstars.sap.pam",
+    "appURI": "de/itsfullofstars/sap/pam",
+    "cdnDomain": "sdk.openui5.org",
+    "defaultTheme": "sap_horizon",
+    "gte1_98_0": true,
+    "gte1_104_0": true,
+    "gte1_115_0": true,
+    "gte1_120_0": true,
+    "gte1_142_0": true,
+    "lt1_124_0": false,
+    "setupCompleted": true
+  }
+}

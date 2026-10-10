@@ -1,0 +1,233 @@
+<mvc:View
+    controllerName="de.itsfullofstars.sap.pam.controller.ProductDetail"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <Page
+        id="productDetailPage"
+        showHeader="false">
+
+        <content>
+            <VBox class="pamDetailHero">
+                <HBox
+                    justifyContent="SpaceBetween"
+                    alignItems="Center"
+                    wrap="Wrap">
+
+                    <HBox alignItems="Center" wrap="Wrap">
+                        <Title
+                            text="{pam>version}"
+                            level="H1"
+                            class="pamDetailTitle sapUiTinyMarginEnd" />
+
+                        <ObjectStatus
+                            text="{pam>status}"
+                            state="{
+                                path: 'pam>status',
+                                formatter: '.currentStatusState'
+                            }"
+                            inverted="true" />
+                    </HBox>
+
+                    <ObjectStatus
+                        title="{i18n>detail.mainstreamSupportUntil}"
+                        text="{
+                            path: 'pam>eomm',
+                            formatter: '.supportStatusText'
+                        }"
+                        icon="{
+                            path: 'pam>eomm',
+                            formatter: '.supportStatusIcon'
+                        }"
+                        state="{
+                            path: 'pam>eomm',
+                            formatter: '.supportStatusState'
+                        }"
+                        class="pamSupportEndStatus" />
+                </HBox>
+            </VBox>
+
+            <HBox class="pamCardRow sapUiSmallMargin" wrap="Wrap">
+                <VBox class="pamCard" width="calc(50% - 0.5rem)">
+                    <Text
+                        text="{i18n>detail.productInfo}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamInfoRows">
+                        <HBox class="pamInfoRow">
+                            <Text text="{i18n>field.name}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{pam>name}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+
+                        <HBox class="pamInfoRow">
+                            <Text text="{i18n>field.product}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{pam>product}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+
+                        <HBox class="pamInfoRow">
+                            <Text text="{i18n>field.line}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{pam>line}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+
+                        <HBox class="pamInfoRow">
+                            <Text text="{i18n>field.category}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{pam>category}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+                    </VBox>
+
+                    <VBox class="pamCardBody" alignItems="End">
+                        <Button
+                            text="{i18n>table.supportPortalOpen}"
+                            icon="sap-icon://action"
+                            iconFirst="false"
+                            type="Emphasized"
+                            class="pamSupportButton"
+                            press=".onOpenSupportPortal" />
+                    </VBox>
+                </VBox>
+
+                <VBox class="pamCard" width="calc(50% - 0.5rem)">
+                    <Text
+                        text="{i18n>detail.lifecycle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <List
+                            items="{detail>/milestones}"
+                            showSeparators="None"
+                            class="pamTimelineList">
+
+                            <CustomListItem class="pamTimelineItem">
+                                <HBox class="pamTimelineRow">
+                                    <core:Icon
+                                        src="sap-icon://circle-task-2"
+                                        color="{detail>color}"
+                                        size="{detail>size}"
+                                        class="pamTimelineDot" />
+
+                                    <VBox>
+                                        <Text
+                                            text="{detail>label}"
+                                            class="pamTimelineLabel" />
+
+                                        <Text
+                                            text="{detail>date}"
+                                            class="pamTimelineDate" />
+                                    </VBox>
+                                </HBox>
+                            </CustomListItem>
+                        </List>
+                    </VBox>
+                </VBox>
+            </HBox>
+
+            <HBox class="pamCardRow sapUiSmallMargin" wrap="Wrap">
+                <VBox class="pamCard" width="calc(50% - 0.5rem)">
+                    <Text
+                        text="{i18n>detail.moreData}"
+                        class="pamCardHeader" />
+
+                    <VBox
+                        items="{detail>/fields}"
+                        class="pamInfoRows">
+
+                        <HBox class="pamInfoRow">
+                            <Text text="{detail>label}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{detail>value}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox
+                    class="pamCard"
+                    width="calc(50% - 0.5rem)"
+                    visible="{detail>/isUi5Entry}">
+
+                    <Text
+                        text="{i18n>detail.ui5Info}"
+                        class="pamCardHeader" />
+
+                    <VBox
+                        items="{detail>/ui5Fields}"
+                        class="pamInfoRows">
+
+                        <HBox class="pamInfoRow">
+                            <Text text="{detail>label}" class="pamInfoLabel">
+                                <layoutData>
+                                    <FlexItemData growFactor="0" baseSize="42%" />
+                                </layoutData>
+                            </Text>
+                            <Text text="{detail>value}" class="pamInfoValue">
+                                <layoutData>
+                                    <FlexItemData growFactor="1" baseSize="0%" />
+                                </layoutData>
+                            </Text>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+
+            <HBox
+                justifyContent="End"
+                class="sapUiSmallMargin">
+
+                <Button
+                    text="{
+                        path: 'detail>/isOwnProduct',
+                        formatter: '.ownProductButtonText'
+                    }"
+                    icon="{
+                        path: 'detail>/isOwnProduct',
+                        formatter: '.ownProductButtonIcon'
+                    }"
+                    type="{
+                        path: 'detail>/isOwnProduct',
+                        formatter: '.ownProductButtonType'
+                    }"
+                    press=".onToggleOwnProduct" />
+            </HBox>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,139 @@
+{
+	"_version": "2.0.0",
+	"sap.app": {
+		"id": "de.itsfullofstars.sap.pam",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "${version}"
+		},
+		"sourceTemplate": {
+			"id": "generator-ui5-ts-app",
+			"version": "1.1.0",
+			"toolsId": "0cadf0d2-8b8f-49a5-8f88-e2b64c9652ee"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "de.itsfullofstars.sap.pam.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.152.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"handleValidation": true,
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "de.itsfullofstars.sap.pam.i18n.i18n",
+					"supportedLocales": [
+						"en",
+						"de"
+					],
+					"fallbackLocale": "en",
+					"async": true
+				}
+			},
+			"pam": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/PAM.json"
+			},
+			"ownProducts": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/OwnProducts.json"
+			}
+		},
+		"routing": {
+			"rootView": {
+				"viewName": "de.itsfullofstars.sap.pam.view.App",
+				"type": "XML",
+				"id": "root"
+			},
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "de.itsfullofstars.sap.pam.view",
+				"controlId": "app",
+				"controlAggregation": "pages"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "main",
+					"target": "main"
+				},
+				{
+					"pattern": "myproducts",
+					"name": "myproducts",
+					"target": "myproducts"
+				},
+				{
+					"pattern": "myproducts/add",
+					"name": "myproductsadd",
+					"target": "myproductsadd"
+				},
+				{
+					"pattern": "supportstatus",
+					"name": "supportstatus",
+					"target": "supportstatus"
+				},
+				{
+					"pattern": "productdetail/{index}",
+					"name": "productdetail",
+					"target": "productdetail"
+				}
+			],
+			"targets": {
+				"main": {
+					"id": "main",
+					"name": "Main"
+				},
+				"myproducts": {
+					"id": "myproducts",
+					"name": "MyProducts"
+				},
+				"myproductsadd": {
+					"id": "myproductsadd",
+					"name": "MyProductsAdd"
+				},
+				"supportstatus": {
+					"id": "supportstatus",
+					"name": "SupportStatus"
+				},
+				"productdetail": {
+					"id": "productdetail",
+					"name": "ProductDetail"
+				}
+			}
+		}
+	}
+}

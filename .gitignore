@@ -1,0 +1,47 @@
+# build results
+dist
+coverage
+report
+.nyc_output
+webapp/model/PAM.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+.DS_Store
+.env
+
+node_modules/
+dist/
+.scp/
+.env
+Makefile*.mta
+mta_archives
+mta-*
+resources
+archive.zip
+.*_mta_build_tmp
+
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Allure
+/allure-results/
+/allure-report/
+
+# SBOM (regenerate via `npm run sbom` / `npm run sbom:report`)
+sbom.json
+sbom-report.html

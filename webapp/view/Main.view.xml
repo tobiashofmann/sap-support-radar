@@ -1,0 +1,737 @@
+<mvc:View
+    controllerName="de.itsfullofstars.sap.pam.controller.Main"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+        showHeader="false"
+        class="sapUiResponsiveContentPadding"
+    >
+
+        <content>
+            <Title
+                text="{viewSettings>/heading}"
+                level="H1"
+                class="pamMainHeading sapUiSmallMarginTop sapUiSmallMarginBottom"
+            />
+
+            <FlexBox
+                wrap="Wrap"
+                renderType="Div"
+                        class="sapUiSmallMargin"
+                    >
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                        >
+                            <Label
+                                text="{i18n>field.status}"
+                                labelFor="filterCurrentStatus"
+                            />
+
+                            <Select
+                                id="filterCurrentStatus"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                                items="{filter>/currentStatus}"
+                            >
+                                <core:Item
+                                    key="{filter>key}"
+                                    text="{filter>text}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                        >
+                            <Label
+                                text="{i18n>field.eomm}"
+                                labelFor="filterMainstreamMaintenance"
+                            />
+
+                            <Select
+                                id="filterMainstreamMaintenance"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                                items="{filter>/mainstreamMaintenance}"
+                            >
+                                <core:Item
+                                    key="{filter>key}"
+                                    text="{filter>text}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                        >
+                            <Label
+                                text="{i18n>field.eom}"
+                                labelFor="filterExtendedMaintenance"
+                            />
+
+                            <Select
+                                id="filterExtendedMaintenance"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                                items="{filter>/extendedMaintenance}"
+                            >
+                                <core:Item
+                                    key="{filter>key}"
+                                    text="{filter>text}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                        >
+                            <Label
+                                text="{i18n>filter.mainstreamMaintenanceEnds}"
+                                labelFor="filterMainstreamMaintenanceRelative"
+                            />
+
+                            <Select
+                                id="filterMainstreamMaintenanceRelative"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                            >
+                                <core:Item
+                                    key=""
+                                    text="{i18n>filter.relativeAll}"
+                                />
+
+                                <core:Item
+                                    key="3"
+                                    text="{i18n>filter.relative3Months}"
+                                />
+
+                                <core:Item
+                                    key="6"
+                                    text="{i18n>filter.relative6Months}"
+                                />
+
+                                <core:Item
+                                    key="12"
+                                    text="{i18n>filter.relative12Months}"
+                                />
+
+                                <core:Item
+                                    key="24"
+                                    text="{i18n>filter.relative2Years}"
+                                />
+
+                                <core:Item
+                                    key="36"
+                                    text="{i18n>filter.relative3Years}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{= !${view>/showAdvancedFilters} }"
+                        >
+                            <Label text=" " />
+
+                            <Button
+                                icon="sap-icon://add"
+                                text="{i18n>filter.showMoreFilters}"
+                                press=".onToggleAdvancedFilters"
+                            />
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label
+                                text="{i18n>field.version}"
+                                labelFor="filterProductVersion"
+                            />
+
+                            <Input
+                                id="filterProductVersion"
+                                liveChange=".onFilterChange"
+                                placeholder="{i18n>filter.placeholder}"
+                            />
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label
+                                text="{i18n>field.product}"
+                                labelFor="filterProduct"
+                            />
+
+                            <Input
+                                id="filterProduct"
+                                liveChange=".onFilterChange"
+                                placeholder="{i18n>filter.placeholder}"
+                            />
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label
+                                text="{i18n>field.line}"
+                                labelFor="filterProductLine"
+                            />
+
+                            <Input
+                                id="filterProductLine"
+                                liveChange=".onFilterChange"
+                                placeholder="{i18n>filter.placeholder}"
+                            />
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label
+                                text="{i18n>field.ua}"
+                                labelFor="filterUnrestrictedAvailable"
+                            />
+
+                            <Select
+                                id="filterUnrestrictedAvailable"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                                items="{filter>/unrestrictedAvailable}"
+                            >
+                                <core:Item
+                                    key="{filter>key}"
+                                    text="{filter>text}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            width="15rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label
+                                text="{i18n>field.ra_puna}"
+                                labelFor="filterRestrictedAvailableNotAllowed"
+                            />
+
+                            <Select
+                                id="filterRestrictedAvailableNotAllowed"
+                                width="100%"
+                                selectedKey=""
+                                change=".onFilterChange"
+                                items="{filter>/restrictedAvailableNotAllowed}"
+                            >
+                                <core:Item
+                                    key="{filter>key}"
+                                    text="{filter>text}"
+                                />
+                            </Select>
+                        </VBox>
+
+                        <VBox
+                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                            visible="{view>/showAdvancedFilters}"
+                        >
+                            <Label text=" " />
+
+                            <Button
+                                icon="sap-icon://less"
+                                text="{i18n>filter.showFewerFilters}"
+                                press=".onToggleAdvancedFilters"
+                            />
+                        </VBox>
+
+                        <VBox class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                            <Label text=" " />
+
+                            <Button
+                                icon="sap-icon://clear-filter"
+                                text="{i18n>filter.reset}"
+                                press=".onResetFilters"
+                            />
+                        </VBox>
+            </FlexBox>
+
+            <HBox
+                justifyContent="SpaceBetween"
+                alignItems="Center"
+                class="sapUiTinyMarginBottom"
+            >
+                <Button
+                    icon="sap-icon://bar-chart"
+                    tooltip="{i18n>filter.chartAnalysisTooltip}"
+                    press=".onShowChartAnalysis"
+                />
+
+                <HBox alignItems="Center">
+                    <Label
+                        text="{i18n>filter.highlightLabel}"
+                        labelFor="segSupportEndHighlight"
+                        class="sapUiTinyMarginEnd"
+                    />
+
+                    <SegmentedButton
+                        id="segSupportEndHighlight"
+                        selectedKey="none"
+                        selectionChange=".onSupportEndHighlightChange"
+                    >
+                        <items>
+                            <SegmentedButtonItem key="none" text="{i18n>filter.highlightOff}" />
+                            <SegmentedButtonItem key="3M"   text="{i18n>filter.highlight3Months}" width="5.5rem" />
+                            <SegmentedButtonItem key="6M"   text="{i18n>filter.highlight6Months}" width="5.5rem" />
+                            <SegmentedButtonItem key="12M"  text="{i18n>filter.highlight12Months}" width="5.5rem"/>
+                            <SegmentedButtonItem key="24M"  text="{i18n>filter.highlight2Years}" width="4.5rem" />
+                            <SegmentedButtonItem key="36M"  text="{i18n>filter.highlight3Years}" width="4.5rem" />
+                        </items>
+                    </SegmentedButton>
+                </HBox>
+            </HBox>
+
+            <Table
+                id="pamTable"
+                width="100%"
+                growing="true"
+                growingThreshold="50"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders"
+                noDataText="{i18n>table.noDataPam}"
+                items="{
+                    path: 'pam>/'
+                }"
+            >
+                <headerToolbar>
+                    <Toolbar>
+
+                        <SearchField
+                            id="globalSearch"
+                            width="22rem"
+                            placeholder="{i18n>table.searchPlaceholder}"
+                            liveChange=".onSearchChange"
+                            search=".onSearchChange"
+                        />
+
+                        <ToolbarSpacer />
+
+                        <Label
+                            text="{i18n>table.sortBy}"
+                            class="sapUiTinyMarginEnd"
+                        />
+
+                        <Select
+                            id="sortField"
+                            width="19rem"
+                            selectedKey="version"
+                            change=".onSortChange"
+                        >
+                            <items>
+                                <core:Item
+                                    key="version"
+                                    text="{i18n>field.version}"
+                                />
+
+                                <core:Item
+                                    key="name"
+                                    text="{i18n>field.name}"
+                                />
+
+                                <core:Item
+                                    key="product"
+                                    text="{i18n>field.product}"
+                                />
+
+                                <core:Item
+                                    key="line"
+                                    text="{i18n>field.line}"
+                                />
+
+                                <core:Item
+                                    key="category"
+                                    text="{i18n>field.category}"
+                                />
+
+                                <core:Item
+                                    key="addOn"
+                                    text="{i18n>field.addOn}"
+                                />
+
+                                <core:Item
+                                    key="status"
+                                    text="{i18n>field.status}"
+                                />
+
+                                <core:Item
+                                    key="ra_puna"
+                                    text="{i18n>field.ra_puna}"
+                                />
+
+                                <core:Item
+                                    key="ra_pua"
+                                    text="{i18n>field.ra_pua}"
+                                />
+
+                                <core:Item
+                                    key="ua"
+                                    text="{i18n>field.ua}"
+                                />
+
+                                <core:Item
+                                    key="hanaStatus"
+                                    text="{i18n>field.hanaStatus}"
+                                />
+
+                                <core:Item
+                                    key="hanaDate"
+                                    text="{i18n>field.hanaDate}"
+                                />
+
+                                <core:Item
+                                    key="eomm"
+                                    text="{i18n>field.eomm}"
+                                />
+
+                                <core:Item
+                                    key="eom"
+                                    text="{i18n>field.eom}"
+                                />
+
+                                <core:Item
+                                    key="eop1"
+                                    text="{i18n>field.eop1}"
+                                />
+
+                                <core:Item
+                                    key="eosk"
+                                    text="{i18n>field.eosk}"
+                                />
+
+                                <core:Item
+                                    key="url"
+                                    text="{i18n>field.url}"
+                                />
+                            </items>
+                        </Select>
+
+                        <ToggleButton
+                            id="sortAscending"
+                            text="{i18n>table.sortAscending}"
+                            pressed="true"
+                            press=".onSortChange"
+                            class="sapUiTinyMarginBegin"
+                        />
+
+                        <Button
+                            icon="sap-icon://clear-filter"
+                            tooltip="{i18n>table.reset}"
+                            press=".onReset"
+                            class="sapUiTinyMarginBegin"
+                        />
+
+                        <Button
+                            icon="sap-icon://table-column"
+                            text="{i18n>table.columnsButton}"
+                            tooltip="{i18n>table.columnsTooltip}"
+                            press=".onOpenColumnSettings"
+                            class="sapUiTinyMarginBegin"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column width="10.9%">
+                        <Text text="{i18n>field.version}" />
+                    </Column>
+
+                    <Column width="10.9%">
+                        <Text text="{i18n>field.name}" />
+                    </Column>
+
+                    <Column width="9.1%">
+                        <Text text="{i18n>field.product}" />
+                    </Column>
+
+                    <Column width="9.1%">
+                        <Text text="{i18n>field.line}" />
+                    </Column>
+
+                    <Column width="12.7%">
+                        <Text text="{i18n>field.category}" />
+                    </Column>
+
+                    <Column
+                        id="columnAddOnProductVersion"
+                        visible="{viewSettings>/columns/addOnProductVersion}"
+                        width="9.1%"
+                    >
+                        <Text text="{i18n>field.addOn}" />
+                    </Column>
+
+                    <Column width="10.9%">
+                        <Text text="{i18n>field.status}" />
+                    </Column>
+
+                    <Column
+                        id="columnRestrictedAvailableNotAllowed"
+                        visible="{viewSettings>/columns/restrictedAvailableNotAllowed}"
+                        width="12.7%"
+                    >
+                        <Text
+                            text="{i18n>field.ra_puna}"
+                        />
+                    </Column>
+
+                    <Column
+                        id="columnRestrictedAvailableAllowed"
+                        visible="{viewSettings>/columns/restrictedAvailableAllowed}"
+                        width="12.7%"
+                    >
+                        <Text
+                            text="{i18n>field.ra_pua}"
+                        />
+                    </Column>
+
+                    <Column
+                        width="12.7%"
+                        hAlign="Center"
+                    >
+                        <Text text="{i18n>field.ua}" />
+                    </Column>
+
+                    <Column
+                        id="columnReadinessStatusForSapHana"
+                        visible="{viewSettings>/columns/readinessStatusForSapHana}"
+                        width="12.7%"
+                    >
+                        <Text text="{i18n>field.hanaStatus}" />
+                    </Column>
+
+                    <Column
+                        id="columnReadinessDateForSapHana"
+                        visible="{viewSettings>/columns/readinessDateForSapHana}"
+                        width="10.9%"
+                    >
+                        <Text text="{i18n>field.hanaDate}" />
+                    </Column>
+
+                    <Column
+                        width="12.7%"
+                        hAlign="Center"
+                    >
+                        <Text text="{i18n>field.eomm}" />
+                    </Column>
+
+                    <Column
+                        width="12.7%"
+                        hAlign="Center"
+                    >
+                        <Text text="{i18n>field.eom}" />
+                    </Column>
+
+                    <Column
+                        id="columnEndOfPriorityOneSupport"
+                        visible="{viewSettings>/columns/endOfPriorityOneSupport}"
+                        width="12.7%"
+                    >
+                        <Text text="{i18n>field.eop1}" />
+                    </Column>
+
+                    <Column
+                        id="columnEndOfSafekeeperService"
+                        visible="{viewSettings>/columns/endOfSafekeeperService}"
+                        width="14.5%"
+                    >
+                        <Text
+                            text="{i18n>field.eosk}"
+                        />
+                    </Column>
+
+                    <Column
+                        id="columnSupportPortalUrl"
+                        visible="{viewSettings>/columns/supportPortalUrl}"
+                        width="21.8%"
+                    >
+                        <Text text="{i18n>field.url}" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem
+                        vAlign="Middle"
+                        type="Navigation"
+                        press=".onProductRowPress"
+                        highlight="{
+                            parts: [
+                                { path: 'pam>eomm' },
+                                { path: 'view>/supportEndHighlightDate' }
+                            ],
+                            formatter: '.supportEndHighlight'
+                        }"
+                    >
+                        <cells>
+                            <Text text="{pam>version}" />
+                            <Text text="{pam>name}" />
+                            <Text text="{pam>product}" />
+                            <Text text="{pam>line}" />
+                            <Text text="{pam>category}" />
+                            <Text text="{pam>addOn}" />
+                            <Text text="{pam>status}" />
+                            <Text
+                                text="{pam>ra_puna}"
+                            />
+                            <Text
+                                text="{pam>ra_pua}"
+                            />
+                            <Text text="{pam>ua}" />
+                            <Text text="{pam>hanaStatus}" />
+                            <Text text="{pam>hanaDate}" />
+                            <Text text="{pam>eomm}" />
+                            <Text text="{pam>eom}" />
+                            <Text text="{pam>eop1}" />
+                            <Text
+                                text="{pam>eosk}"
+                            />
+
+                            <Link
+                                text="{i18n>table.supportPortalOpen}"
+                                href="{pam>url}"
+                                target="_blank"
+                            />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+
+        <dependents>
+            <Popover
+                id="columnSettingsPopover"
+                title="{i18n>table.columnsPopoverTitle}"
+                placement="Bottom"
+            >
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <CheckBox
+                            text="{i18n>field.addOn}"
+                            selected="{viewSettings>/columns/addOnProductVersion}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.ra_puna}"
+                            selected="{viewSettings>/columns/restrictedAvailableNotAllowed}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.ra_pua}"
+                            selected="{viewSettings>/columns/restrictedAvailableAllowed}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.hanaStatus}"
+                            selected="{viewSettings>/columns/readinessStatusForSapHana}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.hanaDate}"
+                            selected="{viewSettings>/columns/readinessDateForSapHana}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.eop1}"
+                            selected="{viewSettings>/columns/endOfPriorityOneSupport}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.eosk}"
+                            selected="{viewSettings>/columns/endOfSafekeeperService}"
+                        />
+
+                        <CheckBox
+                            text="{i18n>field.url}"
+                            selected="{viewSettings>/columns/supportPortalUrl}"
+                        />
+                    </VBox>
+                </content>
+            </Popover>
+
+            <Dialog
+                id="chartAnalysisDialog"
+                title="{i18n>chart.statusDistributionTitle}"
+                contentWidth="28rem"
+            >
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Text
+                            text="{chart>/totalText}"
+                            class="sapUiSmallMarginBottom"
+                        />
+
+                        <List
+                            items="{chart>/distribution}"
+                            showSeparators="None"
+                        >
+                            <CustomListItem>
+                                <HBox
+                                    alignItems="Center"
+                                    width="100%"
+                                    class="pamBarChartRow sapUiTinyMarginBottom"
+                                >
+                                    <Text
+                                        text="{chart>value}"
+                                        class="pamBarChartLabel"
+                                    />
+
+                                    <HBox class="pamBarChartTrack">
+                                        <HBox
+                                            class="pamBarChartBar"
+                                            width="{
+                                                parts: [
+                                                    { path: 'chart>count' },
+                                                    { path: 'chart>/maxCount' }
+                                                ],
+                                                formatter: '.formatBarWidth'
+                                            }"
+                                        />
+                                    </HBox>
+
+                                    <Text
+                                        text="{chart>count}"
+                                        class="pamBarChartValue"
+                                    />
+                                </HBox>
+                            </CustomListItem>
+                        </List>
+                    </VBox>
+                </content>
+
+                <beginButton>
+                    <Button
+                        text="{i18n>chart.close}"
+                        press=".onCloseChartAnalysis"
+                    />
+                </beginButton>
+            </Dialog>
+        </dependents>
+    </Page>
+</mvc:View>

@@ -1,0 +1,236 @@
+/* Product detail page - custom Fiori-style layout not covered by stock sap.m styling */
+
+.pamDetailHero {
+	background-color: #eef2f7;
+	padding: 1rem 1.5rem 1.5rem;
+}
+
+.pamDetailTitle {
+	font-size: 1.75rem;
+	font-weight: 700;
+}
+
+.pamSupportEndStatus .sapMObjStatusTitle,
+.pamSupportEndStatus .sapMObjStatusText {
+	font-size: 1.1rem;
+}
+
+.pamSupportEndStatus .sapMObjStatusIcon {
+	font-size: 1.2rem;
+}
+
+.pamCardRow {
+	gap: 1rem;
+	align-items: stretch;
+}
+
+.pamCard {
+	background-color: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+	padding: 0;
+	overflow: hidden;
+}
+
+.pamCardHeader {
+	font-size: 1.1rem;
+	font-weight: 700;
+	padding: 1rem 1.25rem;
+	border-bottom: 1px solid #ededed;
+}
+
+.pamCardBody {
+	padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.pamSupportButton {
+	margin-top: 0.75rem;
+}
+
+.pamTimelineRow {
+	align-items: flex-start;
+	gap: 0.6rem;
+	padding: 0.5rem 0;
+}
+
+.pamTimelineDot {
+	margin-top: 0.3rem;
+}
+
+.pamTimelineLabel {
+	font-weight: 700;
+}
+
+.pamTimelineDate {
+	color: #6a6d70;
+}
+
+.pamInfoRow {
+	border-bottom: 1px solid #ededed;
+	align-items: stretch;
+}
+
+.pamInfoRows {
+	padding-bottom: 0.5rem;
+}
+
+.pamInfoLabel {
+	display: block;
+	width: 100%;
+	background-color: #f5f6f7;
+	color: #6a6d70;
+	padding: 0.65rem 1rem;
+	box-sizing: border-box;
+}
+
+.pamInfoValue {
+	display: block;
+	width: 100%;
+	padding: 0.65rem 1rem;
+	box-sizing: border-box;
+	font-weight: 600;
+	text-align: left;
+}
+
+/* App shell toolbar - logo, title, nav tabs with active-page underline */
+
+.pamAppToolbar {
+	padding-left: 0.5rem;
+}
+
+.pamAppLogo {
+	font-size: 1.5rem;
+	color: #0a6ed1;
+	margin-right: 0.5rem;
+}
+
+.pamNavTab {
+	margin: 0 0.25rem;
+}
+
+.pamNavTab .sapMBtnInner {
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	background-color: transparent;
+	box-shadow: none;
+}
+
+.pamNavTab .sapMBtnContent {
+	font-weight: 500;
+}
+
+/*
+* ToggleButton's own "pressed" state (real, reactively bound property) is
+* reused purely as the "this is the active page" signal - the resulting
+* sapMToggleBtnPressed class is set by the framework itself (on the inner
+* button element, not the outer sapMBarChild wrapper that carries pamNavTab -
+* hence the descendant selector), not by a custom class binding (class="{...}"
+* bindings don't update reactively in XMLViews). The theme's own pressed
+* styling (box border/background) is stripped so only the bottom-border
+* "tab underline" remains.
+*/
+.pamNavTab .sapMToggleBtnPressed {
+	border: none;
+	border-bottom: 2px solid #0a6ed1;
+	background-color: transparent;
+	box-shadow: none;
+}
+
+.pamNavTab .sapMToggleBtnPressed .sapMBtnContent {
+	color: #0a6ed1;
+	font-weight: 700;
+}
+
+/* Main view - page heading above the (now panel-less) filter row */
+
+.pamMainHeading {
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+/*
+* Chart analysis dialog (Main / SupportStatus) - a horizontal bar chart built
+* from plain HBox/Text controls rather than a charting library (none is a
+* declared dependency, see CLAUDE.md). Only each bar's width is reactively
+* bound (via BaseController#formatBarWidth); color/sizing are static CSS so
+* the XMLView `class="{...}"` reactivity caveat doesn't apply.
+*/
+.pamBarChartRow {
+	gap: 0.75rem;
+}
+
+.pamBarChartLabel {
+	width: 11rem;
+	flex-shrink: 0;
+}
+
+.pamBarChartTrack {
+	flex: 1 1 auto;
+	height: 1.125rem;
+	background-color: #ededed;
+	border-radius: 0.25rem;
+	overflow: hidden;
+}
+
+.pamBarChartBar {
+	height: 100%;
+	min-width: 2px;
+	background-color: #0a6ed1;
+	border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.pamBarChartValue {
+	width: 2.5rem;
+	flex-shrink: 0;
+	text-align: right;
+	font-weight: 600;
+}
+
+/*
+* "Create product" form (MyProductsAdd) - entries stacked one below another,
+* clustered into thematic sections (reusing the .pamCard/.pamCardHeader/
+* .pamCardBody look already established on the product detail page), each
+* with an intro text above its field rows.
+*/
+.pamFormContainer {
+	max-width: 48rem;
+	margin: 0 auto;
+}
+
+/* Divider between the "required fields" card and the optional ones below it. */
+.pamFormDivider {
+	display: block;
+	margin: 0.5rem 0 1.5rem;
+	padding-top: 1.5rem;
+	border-top: 2px solid #ededed;
+	font-size: 1.1rem;
+	font-weight: 700;
+}
+
+.pamFormSectionText {
+	color: #6a6d70;
+	margin-bottom: 0.75rem;
+}
+
+.pamFormRow {
+	gap: 1rem;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #ededed;
+}
+
+.pamFormRow:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.pamFormLabel {
+	width: 13rem;
+	flex-shrink: 0;
+	padding-top: 0.35rem;
+}
+
+.pamFormControl {
+	flex: 1 1 auto;
+	max-width: 24rem;
+}

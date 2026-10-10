@@ -1,0 +1,204 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  quality:
+    name: Lint & type-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: UI5 lint
+        run: npm run ui5lint
+
+      - name: Type-check (app)
+        run: npm run ts-typecheck
+
+      - name: Type-check (scripts)
+        run: npm run ts-typecheck:scripts
+
+  build-app:
+    name: Build app (dist/app)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # GitHub Pages is a static host, so the app can't rely on the dev-server
+      # proxy for the UI5 framework resources. Use the CDN bootstrap page
+      # (already copied into dist/ by the build) as the deployed entry point.
+      # Deployed under /app/ - see ADR 0011 for why the app no longer sits at
+      # the Pages root (VitePress does).
+      - name: Use CDN bootstrap as entry point
+        run: cp dist/index-cdn.html dist/index.html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-app
+          path: dist
+          retention-days: 7
+
+  build-docs:
+    name: Build docs (VitePress)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build VitePress site
+        run: npm run docs:build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-docs
+          path: docs/.vitepress/dist
+          retention-days: 7
+
+  test-and-reports:
+    name: Tests & quality reports
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run e2e tests with coverage
+        run: npm run test:e2e:coverage
+
+      - name: Generate SBOM report
+        run: npm run sbom:report
+
+      # Allure's trend graphs (History, Retries, Duration, Categories) only
+      # render if allure-results/history/ is seeded before `allure generate`
+      # runs (see scripts/allure-generate.ts and ADR 0011). Locally that
+      # history/ folder is carried forward from the previous local report;
+      # in CI there is no previous local report, so it's fetched instead from
+      # the site this very workflow deployed last time. Best-effort: a fresh
+      # Pages deployment (or a renamed repo) simply has no history yet.
+      - name: Fetch previous Allure history from the live site
+        run: |
+          mkdir -p allure-results/history
+          PAGES_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          for f in history-trend.json duration-trend.json retry-trend.json categories-trend.json; do
+            curl -fsSL "$PAGES_URL/reports/allure/history/$f" -o "allure-results/history/$f" \
+              || echo "No previous $f found (first deployment?) - continuing without it."
+          done
+
+      - name: Generate Allure report
+        run: npm run test:e2e:allure:generate
+
+      - name: Assemble reports/
+        run: |
+          mkdir -p site-reports/coverage site-reports/allure site-reports/playwright
+          cp -r coverage/. site-reports/coverage/
+          cp -r allure-report/. site-reports/allure/
+          cp -r playwright-report/. site-reports/playwright/
+          cp sbom-report.html site-reports/sbom.html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-reports
+          path: site-reports
+          retention-days: 7
+
+      # Keep raw results/reports as downloadable CI artifacts too (JUnit/Sonar
+      # XML, raw SBOM JSON) - not part of the published Pages site itself.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results/junit.xml
+            test-results/sonar-report.xml
+            sbom.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+  pages:
+    name: Assemble & upload Pages artifact
+    needs: [quality, build-app, build-docs, test-and-reports]
+    runs-on: ubuntu-latest
+    steps:
+      # VitePress build output becomes the Pages root.
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-docs
+          path: _site
+
+      # The app, under /app/ - see ADR 0011.
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-app
+          path: _site/app
+
+      # Coverage/Allure/Playwright/SBOM reports, under /reports/ - see ADR 0011.
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-reports
+          path: _site/reports
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

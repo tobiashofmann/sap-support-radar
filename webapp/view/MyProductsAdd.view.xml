@@ -1,0 +1,303 @@
+<mvc:View
+    controllerName="de.itsfullofstars.sap.pam.controller.MyProductsAdd"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="myProductsAddPage"
+        showHeader="false"
+        class="sapUiResponsiveContentPadding">
+
+        <content>
+            <Title
+                text="{i18n>myProducts.addProduct}"
+                level="H1"
+                class="pamMainHeading sapUiSmallMarginTop sapUiSmallMarginBottom" />
+
+            <VBox class="pamFormContainer">
+                <VBox
+                    width="100%"
+                    class="pamCard sapUiMediumMarginBottom">
+                    <Text
+                        text="{i18n>myProducts.requiredFieldsTitle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <Text
+                            text="{i18n>myProducts.requiredFieldsText}"
+                            class="pamFormSectionText" />
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.version}"
+                                labelFor="addProductVersion"
+                                required="true"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductVersion"
+                                class="pamFormControl"
+                                liveChange=".onRequiredFieldChange" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.name}"
+                                labelFor="addProductName"
+                                required="true"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductName"
+                                class="pamFormControl"
+                                liveChange=".onRequiredFieldChange" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.eomm}"
+                                labelFor="addProductEomm"
+                                required="true"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductEomm"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}"
+                                liveChange=".onRequiredFieldChange" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <Text
+                    text="{i18n>myProducts.optionalFieldsDivider}"
+                    class="pamFormDivider" />
+
+                <VBox
+                    width="100%"
+                    class="pamCard sapUiMediumMarginBottom">
+                    <Text
+                        text="{i18n>myProducts.addSectionIdentityTitle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <Text
+                            text="{i18n>myProducts.addSectionIdentityText}"
+                            class="pamFormSectionText" />
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.product}"
+                                labelFor="addProductProduct"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductProduct"
+                                class="pamFormControl" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.line}"
+                                labelFor="addProductLine"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductLine"
+                                class="pamFormControl" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.category}"
+                                labelFor="addProductCategory"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductCategory"
+                                class="pamFormControl" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox
+                    width="100%"
+                    class="pamCard sapUiMediumMarginBottom">
+                    <Text
+                        text="{i18n>myProducts.addSectionAvailabilityTitle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <Text
+                            text="{i18n>myProducts.addSectionAvailabilityText}"
+                            class="pamFormSectionText" />
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.status}"
+                                labelFor="addProductStatus"
+                                class="pamFormLabel" />
+                            <Select
+                                id="addProductStatus"
+                                class="pamFormControl"
+                                selectedKey=""
+                                items="{statusOptions>/}">
+                                <core:Item
+                                    key="{statusOptions>key}"
+                                    text="{statusOptions>text}" />
+                            </Select>
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.addOn}"
+                                labelFor="addProductAddOn"
+                                class="pamFormLabel" />
+                            <Select
+                                id="addProductAddOn"
+                                class="pamFormControl"
+                                selectedKey="">
+                                <core:Item key="" text="{i18n>myProducts.notSpecified}" />
+                                <core:Item key="Yes" text="{i18n>detail.yes}" />
+                                <core:Item key="No" text="{i18n>detail.no}" />
+                            </Select>
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.ra_puna}"
+                                labelFor="addProductRaPuna"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductRaPuna"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.ra_pua}"
+                                labelFor="addProductRaPua"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductRaPua"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.ua}"
+                                labelFor="addProductUa"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductUa"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.hanaStatus}"
+                                labelFor="addProductHanaStatus"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductHanaStatus"
+                                class="pamFormControl" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.hanaDate}"
+                                labelFor="addProductHanaDate"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductHanaDate"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox
+                    width="100%"
+                    class="pamCard sapUiMediumMarginBottom">
+                    <Text
+                        text="{i18n>myProducts.addSectionSupportTitle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <Text
+                            text="{i18n>myProducts.addSectionSupportText}"
+                            class="pamFormSectionText" />
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.eom}"
+                                labelFor="addProductEom"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductEom"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.eop1}"
+                                labelFor="addProductEop1"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductEop1"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.eosk}"
+                                labelFor="addProductEosk"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductEosk"
+                                class="pamFormControl"
+                                placeholder="{i18n>myProducts.datePlaceholder}" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox
+                    width="100%"
+                    class="pamCard sapUiMediumMarginBottom">
+                    <Text
+                        text="{i18n>myProducts.addSectionOtherTitle}"
+                        class="pamCardHeader" />
+
+                    <VBox class="pamCardBody">
+                        <Text
+                            text="{i18n>myProducts.addSectionOtherText}"
+                            class="pamFormSectionText" />
+
+                        <HBox class="pamFormRow">
+                            <Label
+                                text="{i18n>field.url}"
+                                labelFor="addProductUrl"
+                                class="pamFormLabel" />
+                            <Input
+                                id="addProductUrl"
+                                class="pamFormControl" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <HBox justifyContent="End">
+                    <Button
+                        text="{i18n>myProducts.cancel}"
+                        press=".onCancel"
+                        class="sapUiTinyMarginEnd" />
+
+                    <Button
+                        text="{i18n>myProducts.save}"
+                        type="Emphasized"
+                        press=".onSave" />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
