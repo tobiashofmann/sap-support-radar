@@ -40,6 +40,14 @@ This is the documentation site. The support radar app runs separately:
 
 :::
 
+## Screencast
+
+<video src="/video.webm" controls style="width: 100%; max-width: 900px; border-radius: 8px;"></video>
+
+A quick walkthrough: search for a product, add it to your own landscape, then check its support status
+— see [tests/screencast.md](https://github.com/tobiashofmann/sap-support-radar/blob/main/tests/screencast.md)
+for the exact steps.
+
 ## What is this?
 
 SAP Support Radar is a solution that lets you check the support/maintenance status of the

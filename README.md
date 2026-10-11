@@ -52,6 +52,13 @@ replace.
 See [docs/index.md](docs/index.md) for the full project goal, and [docs/workflow.md](docs/workflow.md) for
 a page-by-page tour with screenshots.
 
+## Screencast
+
+<video src="docs/public/video.webm" controls width="100%"></video>
+
+A quick walkthrough: search for a product, add it to your own landscape, then check its support status
+— see [tests/screencast.md](tests/screencast.md) for the exact steps.
+
 ## From zero to a running app
 
 Assumes a fresh checkout — no `webapp/model/PAM.json` yet, just a `pv` CSV export (SAP's PAM export
