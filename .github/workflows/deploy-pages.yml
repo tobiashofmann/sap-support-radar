@@ -31,6 +31,12 @@ jobs:
 
       - run: npm ci
 
+      # webapp/model/PAM.json is gitignored and generated from the checked-in
+      # `pv` mock CSV (see CLAUDE.md "Mock PAM data") - ui5lint validates the
+      # manifest.json model/dataSource wiring, which needs the file present.
+      - name: Generate PAM.json
+        run: npm run pam:import
+
       - name: Lint
         run: npm run lint
 
@@ -45,6 +51,7 @@ jobs:
 
   build-app:
     name: Build app (dist/app)
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -75,6 +82,7 @@ jobs:
 
   build-docs:
     name: Build docs (VitePress)
+    needs: test-and-reports
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +105,7 @@ jobs:
 
   test-and-reports:
     name: Tests & quality reports
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -107,6 +116,12 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Generated from the checked-in `pv` mock CSV - the Playwright webServer
+      # (start-coverage) also regenerates it on boot, but we create it
+      # explicitly here too so it's never implicitly relied upon.
+      - name: Generate PAM.json
+        run: npm run pam:import
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
