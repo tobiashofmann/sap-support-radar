@@ -1,5 +1,11 @@
 # SAP Support Radar
 
+[![Release](https://img.shields.io/github/v/release/tobiashofmann/sap-support-radar)](https://github.com/tobiashofmann/sap-support-radar/releases)
+[![Deploy GitHub Pages](https://github.com/tobiashofmann/sap-support-radar/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/tobiashofmann/sap-support-radar/actions/workflows/deploy-pages.yml)
+[![License](https://img.shields.io/github/license/tobiashofmann/sap-support-radar)](LICENSE)
+[![Top language](https://img.shields.io/github/languages/top/tobiashofmann/sap-support-radar)](https://github.com/tobiashofmann/sap-support-radar)
+[![App languages](https://img.shields.io/badge/app%20languages-en%20%7C%20de-blue)](webapp/i18n)
+
 Check the support/maintenance status of the SAP products and versions you actually use against the
 official **SAP Product Availability Matrix (PAM)** — no backend, nothing uploaded leaves your browser.
 
