@@ -82,7 +82,7 @@ jobs:
 
   build-docs:
     name: Build docs (VitePress)
-    needs: test-and-reports
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
