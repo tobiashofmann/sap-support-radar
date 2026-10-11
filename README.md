@@ -6,6 +6,8 @@
 [![Top language](https://img.shields.io/github/languages/top/tobiashofmann/sap-support-radar)](https://github.com/tobiashofmann/sap-support-radar)
 [![App languages](https://img.shields.io/badge/app%20languages-en%20%7C%20de-blue)](webapp/i18n)
 
+## 🚀 [**Try it out: open the app**](https://tobiashofmann.github.io/sap-support-radar/app/)
+
 Check the support/maintenance status of the SAP products and versions you actually use against the
 official **SAP Product Availability Matrix (PAM)** — no backend, nothing uploaded leaves your browser.
 

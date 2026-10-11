@@ -8,6 +8,10 @@ hero:
   tagline: A solution that checks your own product versions against the SAP Product Availability Matrix.
   actions:
     - theme: brand
+      text: 🚀 Try it out
+      link: https://tobiashofmann.github.io/sap-support-radar/app/
+      target: _blank
+    - theme: alt
       text: Why Support Radar?
       link: /why
     - theme: alt
@@ -28,6 +32,13 @@ features:
   - title: No backend required
     details: All data (the SAP PAM and your own product selection) is loaded from local JSON in the browser.
 ---
+
+::: tip 🚀 Try it now — no install required
+This is the documentation site. The support radar app runs separately:
+
+### [**Open SAP Support Radar →**](https://tobiashofmann.github.io/sap-support-radar/app/)
+
+:::
 
 ## What is this?
 
