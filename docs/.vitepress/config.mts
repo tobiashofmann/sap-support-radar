@@ -5,6 +5,11 @@ export default defineConfig({
   title: "SAP Support Radar",
   description: "Check your SAP products' support status against the SAP Product Availability Matrix.",
 
+  // Deployed to a project page (https://tobiashofmann.github.io/sap-support-radar/),
+  // not a user/org root page - VitePress needs the base path to emit correct
+  // asset URLs (/sap-support-radar/assets/... instead of /assets/...).
+  base: '/sap-support-radar/',
+
   // /app/ (the deployed app build) and /reports/* (CI-generated quality
   // reports) are merged into the site at deploy time by the GitHub Pages
   // workflow - see ADR 0011 - and don't exist as pages VitePress itself
