@@ -6,6 +6,12 @@ client can look up product/version support status without needing the PAM app's 
 
 It is **read-only** and makes **no network calls** — it only reads the local `PAM.json` file.
 
+This is deliberately **local-only, not a hosted service**: real PAM data is SAP customer-licensed
+information that can never be bundled with this app or served publicly (see
+[ADR 0006](../docs/adr/0006-user-supplied-pam-data.md)). Each user generates their own `PAM.json` locally
+(`npm run pam:import`, from their own SAP PAM CSV export) and runs this server against it on their own
+machine — there is no remote endpoint to connect to instead.
+
 ## Tools
 
 - **`pam_list_fields`** — lists every filterable PAM field (e.g. `version`, `product`, `line`, `status`,

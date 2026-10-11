@@ -13,8 +13,13 @@ separate server rather than a feature of the UI5 app itself.
 ## What it is
 
 - **Read-only.** It only reads `webapp/model/PAM.json` from disk — no writes, no network calls.
-- **Local, stdio-based.** It runs as a local subprocess (`node pam-mcp-server/dist/index.js`) communicating
-  over stdio, the standard transport for local MCP integrations (as opposed to a remote HTTP server).
+- **Local, stdio-based — deliberately not a hosted service.** It runs as a local subprocess (`node
+  pam-mcp-server/dist/index.js`) communicating over stdio. This isn't just a transport choice: real PAM
+  data is SAP customer-licensed information (see [ADR 0006](/adr/0006-user-supplied-pam-data) and
+  [CLAUDE.md](https://github.com/tobiashofmann/sap-support-radar/blob/main/CLAUDE.md) → "Mock PAM data"),
+  so it can never be bundled with this app or served from anywhere public — each user must generate their
+  own `PAM.json` locally (`npm run pam:import`, from their own SAP PAM CSV export) and run the MCP server
+  against it on their own machine. There is no remote/hosted endpoint to point an MCP client at instead.
 - **A thin, generic query layer over the same data the app uses.** It does not duplicate PAM.json — both
   the UI5 app's `pam` model and the MCP server read the identical file (see
   [Architecture → Data model & PAM.json](/architecture#data-model--pam-json)), so they are always in sync
