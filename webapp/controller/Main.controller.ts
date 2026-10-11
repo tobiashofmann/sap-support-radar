@@ -85,6 +85,10 @@ export default class Main extends BaseController {
         }
 
         this.updateFilterValues();
+
+        // The "pam" model's data loads asynchronously (manifest "uri"), so it may not
+        // be available yet when onInit runs - rebuild the filter options once it is.
+        pamModel.attachRequestCompleted(this.updateFilterValues, this);
     }
 
     /** Reacts to the table's list binding changing (e.g. after filtering) by refreshing the heading count. */

@@ -76,6 +76,11 @@ export default class SupportStatus extends BaseController {
 
         if (pamModel) {
             this.updateFilterValues();
+
+            // The "pam" model's data loads asynchronously (manifest "uri"), so it may
+            // not be available yet when onInit runs - rebuild the filter options once
+            // it is.
+            pamModel.attachRequestCompleted(this.updateFilterValues, this);
         }
     }
 
