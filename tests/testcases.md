@@ -93,9 +93,9 @@ Then the table loads more entries
 ### 1.3 - Search
 
 Given the table shows 1554 entries
-When the user searches for "HANA" in the table search field
-Then 305 entries are shown
-And the first entry is product version "ABAP FND 1709 ON HANA"
+When the user searches for "Nanemo" in the table search field
+Then 24 entries are shown
+And the first entry is product version "DU DA FEDURU 1210"
 When the user clears the search field
 Then the table shows 1554 entries again
 
@@ -107,7 +107,7 @@ Given the table has loaded
 When the user sorts the table
 And selects "Current Status"
 Then the first entries shown have current status "In customer-specific maintenance"
-And the first entry is "SAP NETWEAVER 7.4"
+And the first entry is "RA NOGODU 7.4"
 
 <a id="test-1-5"></a>
 
@@ -118,7 +118,7 @@ When the user sorts the table
 And selects "Current Status"
 And clicks "Descending"
 Then the first entries shown have current status "Unrestricted available"
-And the first entry is "SAP S/4HANA 2025"
+And the first entry is "RA To/4CI 2025"
 
 <a id="test-1-6"></a>
 
@@ -127,9 +127,9 @@ And the first entry is "SAP S/4HANA 2025"
 Given the table has loaded
 When the user sorts the table
 And selects "Official Name"
-Then the first entry in the table is "SAP DATA SERVICES 2027"
+Then the first entry in the table is "RA RE SODICU 2027"
 When the user clicks the reset icon in the sort dialog
-Then the first entry in the table is "ABAP FND 1709 ON HANA"
+Then the first entry in the table is "BA CO ROVEFI DIME MI 1.0"
 
 <a id="test-1-7"></a>
 
@@ -167,7 +167,7 @@ Then 4 filters are shown
 Given the table shows 1554 entries
 When the user selects "In 3 Months" from the "Mainstream Maintenance" filter
 Then the table shows 143 entries
-And the first entry is "ACCNTSUBSTAUTOM_ADV 7.38.0"
+And the first entry is "BI KI NA 6.0.0"
 
 <a id="test-1-11"></a>
 
@@ -176,10 +176,10 @@ And the first entry is "ACCNTSUBSTAUTOM_ADV 7.38.0"
 Given the table shows 1554 entries
 When the user selects "In 6 Months" from the "Mainstream Maintenance" filter
 Then the table shows 154 entries
-And the first entry is "ACCNTSUBSTAUTOM_ADV 7.38.0"
+And the first entry is "BI KI NA 6.0.0"
 When the user selects "3 months" from "Mark entries"
 Then the first 10 entries are marked in red
-And entry "FIONEER VAM 1.0" is not marked red
+And entry "PUCO GE 1.0" is not marked red
 
 <a id="test-1-12"></a>
 
@@ -207,7 +207,7 @@ Then the table is unchanged
 
 Given the table shows 1554 entries
 When the user clicks "More filters"
-And filters by product line "S/4HANA"
+And filters by product line "To/4CI"
 Then only matching entries are shown
 When the user clicks "Reset filters"
 Then the product line filter is cleared and the table shows 1554 entries again
@@ -248,7 +248,7 @@ Then the page shows the message "no products maintained"
 
 ### 2.1 - Own products shown on support status
 
-Given the user has added the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", "SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025" on the myproducts page
+Given the user has added the products "RA NOGODU 7.5", "RA NOGODU 7.4", "RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025" on the myproducts page
 When the user navigates to the supportstatus page
 Then the table shows 5 entries
 And the message "no products maintained" is not shown
@@ -258,7 +258,7 @@ And the message "no products maintained" is not shown
 ### 2.2 - Search on support status
 
 Given the support status table shows the user's 5 own products (see 2.1)
-When the user searches for "HANA" in the table search field
+When the user searches for "To/4CI" in the table search field
 Then only the matching own products are shown
 When the user clears the search field
 Then the table shows 5 entries again
@@ -278,7 +278,7 @@ Then only own products with that status are shown
 
 Given the support status table shows the user's 5 own products (see 2.1)
 When the user clicks "More filters"
-And filters by product line "S/4HANA"
+And filters by product line "To/4CI"
 Then only the matching own products are shown
 When the user clicks "Reset filters"
 Then the product line filter is cleared and all 5 own products are shown again
@@ -339,7 +339,7 @@ Then the table shows "PAM-Products (1/1554)"
 ### 3.1 - Add products
 
 Given the user navigates to the myproducts page
-When the user adds the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", "SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025"
+When the user adds the products "RA NOGODU 7.5", "RA NOGODU 7.4", "RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025"
 Then the table shows "PAM-Products (5/1554)"
 
 <a id="test-3-2"></a>
@@ -347,7 +347,7 @@ Then the table shows "PAM-Products (5/1554)"
 ### 3.2 - Add products and list them in the table
 
 Given the user navigates to the myproducts page
-When the user adds the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", "SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025"
+When the user adds the products "RA NOGODU 7.5", "RA NOGODU 7.4", "RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025"
 Then the table shows "PAM-Products (5/1554)"
 When the user clicks the "My products" filter in the table
 Then the table shows 5 entries
@@ -534,8 +534,8 @@ Then clicking "Open support portal" opens the entry's SAP Support Portal URL in 
 
 ### 6.5 - Support status icon reflects approaching end of mainstream maintenance
 
-Given the user searches for "SBOP BI PLATFORM 4.3" (mainstream maintenance ends within 6 months)
+Given the user searches for "KI PO TEBADA 4.3" (mainstream maintenance ends within 6 months)
 Then the support status is shown as critical (error)
 When the user navigates back to the Main table
-And searches for "SAP SERVICE ASSET MANAGER 2505" (mainstream maintenance ends within 12 months)
+And searches for "RA CENU FEFI TITU 2505" (mainstream maintenance ends within 12 months)
 Then the support status is shown as a warning

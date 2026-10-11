@@ -7,9 +7,12 @@
  *
  * Run with: npm run test:scripts
  *
- * fixtures/sample-pam.csv contains the real header line plus 3 real data rows
- * copied verbatim from the (not checked-in) local "pv" export, so this test
- * validates against actual PAM export data rather than hand-written samples.
+ * fixtures/sample-pam.csv contains the real PAM header line plus 3 fictional
+ * mock data rows (SAP's PAM export data is customer-only and must not be
+ * checked in - see CLAUDE.md's "Mock PAM data" section), shaped like real
+ * PAM rows (same columns/status/date formats) so the test still exercises
+ * realistic parsing edge cases (an add-on product, a non-dd.mm.yyyy-free
+ * entry, an "Out of maintenance" status, etc.).
  */
 
 import assert from "node:assert/strict";
@@ -28,14 +31,14 @@ import {
 
 const FIXTURE_CSV_PATH = path.join(__dirname, "fixtures", "sample-pam.csv");
 
-// Three real rows from pv (lines 2, 5 and 35), transcribed through FIELD_MAP by hand
+// The 3 fictional rows in fixtures/sample-pam.csv, transcribed through FIELD_MAP by hand
 // so the test has an independent expectation to compare the script's output against.
 const EXPECTED_ENTRIES: PamJsonEntry[] = [
 	{
-		version: "SAP S/4HANA 2025",
-		name: "SAP S/4HANA 2025",
-		product: "SAP S/4HANA",
-		line: "SAP S/4HANA",
+		version: "MOCK CORE SUITE 2025",
+		name: "Mock Core Suite 2025",
+		product: "MOCK CORE SUITE",
+		line: "MOCK CORE SUITE",
 		category: "Enterprise Resource Planning",
 		addOn: "No",
 		status: "Unrestricted available",
@@ -48,13 +51,13 @@ const EXPECTED_ENTRIES: PamJsonEntry[] = [
 		eom: "",
 		eop1: "",
 		eosk: "",
-		url: "https://userapps.support.sap.com/sap/support/pam?hash=pvnr%3D73555000100900007121"
+		url: "https://www.sap.com/"
 	},
 	{
-		version: "EHP8 FOR SAP ERP 6.0",
-		name: "SAP enhancement package 8 for SAP ERP 6.0",
-		product: "SAP ERP ENHANCE PACKAGE",
-		line: "SAP ERP",
+		version: "EHP8 FOR MOCK LEGACY SUITE 6.0",
+		name: "Mock enhancement package 8 for Mock Legacy Suite 6.0",
+		product: "MOCK LEGACY SUITE ENHANCE PACKAGE",
+		line: "MOCK LEGACY SUITE",
 		category: "Enterprise Resource Planning",
 		addOn: "Yes",
 		status: "Unrestricted available",
@@ -67,13 +70,13 @@ const EXPECTED_ENTRIES: PamJsonEntry[] = [
 		eom: "31.12.2030",
 		eop1: "",
 		eosk: "",
-		url: "https://userapps.support.sap.com/sap/support/pam?hash=pvnr%3D73555000100900000247"
+		url: "https://www.sap.com/"
 	},
 	{
-		version: "SBOP BI PLATFORM 4.2",
-		name: "SAP BusinessObjects Business Intelligence platform 4.2",
-		product: "SBOP BI PLATFORM (ENTERPRISE)",
-		line: "SAP BusinessObjects Business Intelligence",
+		version: "MOCK BI PLATFORM 4.2",
+		name: "Mock Business Objects Business Intelligence platform 4.2",
+		product: "MOCK BI PLATFORM (ENTERPRISE)",
+		line: "MOCK BUSINESS OBJECTS BUSINESS INTELLIGENCE",
 		category: "Technology Platform",
 		addOn: "No",
 		status: "Out of maintenance",
@@ -86,7 +89,7 @@ const EXPECTED_ENTRIES: PamJsonEntry[] = [
 		eom: "",
 		eop1: "31.12.2024",
 		eosk: "",
-		url: "https://userapps.support.sap.com/sap/support/pam?hash=pvnr%3D73555000100900000046"
+		url: "https://www.sap.com/"
 	}
 ];
 
@@ -164,9 +167,9 @@ void test("FIELD_MAP maps every documented PAM column to its short key", () => {
 	);
 });
 
-// --- convertPamCsvToJson (real pv rows via fixtures/sample-pam.csv) --------
+// --- convertPamCsvToJson (mock rows via fixtures/sample-pam.csv) ----------
 
-void test("convertPamCsvToJson converts the real pv fixture rows into PAM.json entries", async () => {
+void test("convertPamCsvToJson converts the mock fixture rows into PAM.json entries", async () => {
 	const outputPath = createTempOutputPath();
 
 	await convertPamCsvToJson(FIXTURE_CSV_PATH, outputPath);

@@ -11,8 +11,7 @@
     "strictPropertyInitialization": false,
     "rootDir": "./webapp",
     "types": [
-      "@openui5/types",
-      "@types/qunit"
+      "@openui5/types"
     ],
     "paths": {
       "de/itsfullofstars/sap/pam/*": [

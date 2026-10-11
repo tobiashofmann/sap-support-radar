@@ -38,8 +38,8 @@ test("2 - Support status", async ({ page }) => {
 
 test("2.1 - Own products shown on support status", async ({ page }) => {
     await test.step(
-        'Given the user has added the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", ' +
-        '"SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025" on the myproducts page ' +
+        'Given the user has added the products "RA NOGODU 7.5", "RA NOGODU 7.4", ' +
+        '"RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025" on the myproducts page ' +
         "and navigated to the supportstatus page",
         async () => {
             await addFiveOwnProducts(page);
@@ -63,8 +63,8 @@ test("2.2 - Search on support status", async ({ page }) => {
         await expect(tableDataRows(page, "supportStatusTable")).toHaveCount(5);
     });
 
-    await test.step('When the user searches for "HANA" in the table search field', async () => {
-        await page.locator(`${byId("globalSearch")} input`).fill("HANA");
+    await test.step('When the user searches for "To/4CI" in the table search field', async () => {
+        await page.locator(`${byId("globalSearch")} input`).fill("To/4CI");
         await page.waitForTimeout(300);
     });
 
@@ -133,8 +133,8 @@ test('2.4 - Filter by product line and "Reset filters"', async ({ page }) => {
         await page.waitForTimeout(300);
     });
 
-    await test.step('And filters by product line "S/4HANA"', async () => {
-        await page.locator(`${byId("filterProductLine")} input`).fill("S/4HANA");
+    await test.step('And filters by product line "To/4CI"', async () => {
+        await page.locator(`${byId("filterProductLine")} input`).fill("To/4CI");
         await page.waitForTimeout(300);
     });
 
@@ -148,7 +148,7 @@ test('2.4 - Filter by product line and "Reset filters"', async ({ page }) => {
         const texts = await rows.allInnerTexts();
 
         for (const text of texts) {
-            expect(text).toContain("S/4HANA");
+            expect(text).toContain("To/4CI");
         }
     });
 

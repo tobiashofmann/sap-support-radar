@@ -58,15 +58,15 @@ test("3 - My products", async ({ page }) => {
 
 test("3.1 - Add products", async ({ page }) => {
     await test.step(
-        'When the user adds the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", ' +
-        '"SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025"',
+        'When the user adds the products "RA NOGODU 7.5", "RA NOGODU 7.4", ' +
+        '"RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025"',
         async () => {
             for (const version of [
-                "SAP NETWEAVER 7.5",
-                "SAP NETWEAVER 7.4",
-                "SAP S/4HANA 2021",
-                "SAP S/4HANA 2022",
-                "SAP S/4HANA 2025"
+                "RA NOGODU 7.5",
+                "RA NOGODU 7.4",
+                "RA To/4CI 2021",
+                "RA To/4CI 2022",
+                "RA To/4CI 2025"
             ]) {
                 await selectProductByVersion(page, version);
             }
@@ -84,15 +84,15 @@ test("3.1 - Add products", async ({ page }) => {
 
 test("3.2 - Add products and list them in the table", async ({ page }) => {
     await test.step(
-        'When the user adds the products "SAP NETWEAVER 7.5", "SAP NETWEAVER 7.4", ' +
-        '"SAP S/4HANA 2021", "SAP S/4HANA 2022", "SAP S/4HANA 2025"',
+        'When the user adds the products "RA NOGODU 7.5", "RA NOGODU 7.4", ' +
+        '"RA To/4CI 2021", "RA To/4CI 2022", "RA To/4CI 2025"',
         async () => {
             for (const version of [
-                "SAP NETWEAVER 7.5",
-                "SAP NETWEAVER 7.4",
-                "SAP S/4HANA 2021",
-                "SAP S/4HANA 2022",
-                "SAP S/4HANA 2025"
+                "RA NOGODU 7.5",
+                "RA NOGODU 7.4",
+                "RA To/4CI 2021",
+                "RA To/4CI 2022",
+                "RA To/4CI 2025"
             ]) {
                 await selectProductByVersion(page, version);
             }

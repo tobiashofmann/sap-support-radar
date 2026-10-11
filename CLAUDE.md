@@ -21,34 +21,33 @@ npm run build         # unoptimized build -> dist/ (fast)
 npm run build:opt     # optimized self-contained build -> dist/ (slower, bundles UI5 itself)
 npm run start:dist    # serve the dist/ build (use --config ui5-dist.yaml variants for CDN dist)
 
-npm run ts-typecheck  # tsc --noEmit type check (also runs automatically via pre{start,build} hooks)
+npm run ts-typecheck  # tsc --noEmit type check (also runs automatically as part of start/build)
 npm run lint          # eslint ./
 npm run ui5lint       # UI5-specific linter (API usage, manifest, etc.)
-npm test              # npm run lint && npm run test-ui5 (lint + full QUnit/OPA suite, CI entry point)
+npm test              # npm run lint && npm run test:e2e (CI entry point)
 
 npm run docs:dev      # vitepress dev server for docs/
 npm run docs:build    # build the vitepress docs site
 
-npm run pam:import    # regenerate webapp/model/PAM.json from the raw CSV export (see below)
+npm run pam:import    # regenerate webapp/model/PAM.json from pv (see "Mock PAM data" below); npm
+                      # start/start-local/start-cdn/start-coverage/build/build:opt/build_old already
+                      # run this first, so it rarely needs to be run by hand
 npm run pam:import -- --ui5  # also merge in SAPUI5/OpenUI5 version support data (see below)
 ```
 
-There is no standalone `test-ui5` script wired into `package.json` beyond what `npm test` references —
-tests are run through the QUnit test runner pages, not a Node test runner. To run/debug tests manually:
+Tests are Playwright end-to-end specs:
 
-- Start the dev server (`npm start`), then open:
-  - Unit tests: `http://localhost:8080/test/Test.qunit.html?testsuite=test-resources/de/itsfullofstars/sap/pam/testsuite.qunit&test=unit/unitTests`
-  - Integration (OPA) tests: `http://localhost:8080/test/Test.qunit.html?testsuite=test-resources/de/itsfullofstars/sap/pam/testsuite.qunit&test=integration/opaTests`
-  - Both: `http://localhost:8080/test-resources/sap/ui/qunit/testrunner.html?testpage=/test/testsuite.qunit.html&autostart=true`
-- Test suite/config lives in [webapp/test/testsuite.qunit.ts](webapp/test/testsuite.qunit.ts); individual
-  unit tests are under `webapp/test/unit/`, OPA integration tests under `webapp/test/integration/`.
-- Coverage instrumentation (istanbul via babel) is configured through `ui5-coverage.yaml` /
-  `.nycrc.json`; run with `npm run start-coverage`.
-- Note: [webapp/test/unit/controller/Main.qunit.ts](webapp/test/unit/controller/Main.qunit.ts) is a
-  leftover scaffold test asserting a `sayHello` method on `Main.controller` that no longer exists — it
-  will fail until updated or removed.
-- `webapp/test/e2e/` (WebdriverIO) is excluded from both TypeScript compilation (`tsconfig.json`) and
-  linting/build resources (`eslint.config.mjs`, `ui5-local.yaml`).
+- `npm run test:e2e` runs the suite headless, auto-starting the dev server via `npm run start-coverage`
+  (see `playwright.config.ts`'s `webServer`); `npm run test:e2e:ui` opens Playwright's interactive UI mode.
+- `npm run test:e2e:coverage` runs the suite (also against `start-coverage`'s istanbul instrumentation,
+  see `ui5-coverage.yaml`) and additionally writes an lcov/HTML coverage report.
+- Specs live in `tests/e2e/*.spec.ts`; `tests/testcases.md` is the human-readable Given/When/Then
+  description each spec implements. Visual-regression baselines live alongside each spec in
+  `tests/e2e/*.spec.ts-snapshots/`, keyed by OS (`-darwin.png`/`-linux.png`) — regenerate with
+  `npm run test:e2e:update-snapshots` (current OS) or `npm run test:e2e:update-snapshots:linux`
+  (via Docker/Podman, matching the `ubuntu-latest` CI runner) after an intentional UI or data change.
+- `npm run test:scripts` runs the Node-native unit tests for `scripts/import-pam-csv.ts` (CSV→JSON
+  conversion), separate from `npm test`/`test:e2e`.
 
 ## Architecture
 
@@ -56,10 +55,12 @@ tests are run through the QUnit test runner pages, not a Node test runner. To ru
 
 The app ships two bundled JSON "models" declared in [webapp/manifest.json](webapp/manifest.json):
 
-- `pam` → [webapp/model/PAM.json](webapp/model/PAM.json): the full SAP Product Availability Matrix
-  export (array of product/version records with short-named fields like `version`, `status`, `eomm`/`eom`
-  — end of mainstream/extended maintenance in `dd.mm.yyyy` German date format — etc.; see "Column/field
-  conventions" below for the full key mapping and how this file is generated).
+- `pam` → [webapp/model/PAM.json](webapp/model/PAM.json): the Product Availability Matrix data (array of
+  product/version records with short-named fields like `version`, `status`, `eomm`/`eom` — end of
+  mainstream/extended maintenance in `dd.mm.yyyy` German date format — etc.; see "Column/field conventions"
+  below for the full key mapping and how this file is generated). `PAM.json` is gitignored and generated at
+  `npm start`/`npm run build` time from [pv](pv) — see "Mock PAM data" below for why the checked-in `pv` is
+  fictional mock data rather than a real SAP export.
 - `ownProducts` → [webapp/model/OwnProducts.json](webapp/model/OwnProducts.json): the subset of PAM
   entries the user has selected as "their" product landscape (empty by default).
 
@@ -112,9 +113,11 @@ equivalent code in the sibling controller needs the same change.
 
 ### Column/field conventions
 
-`webapp/model/PAM.json` is generated from a raw semicolon-separated PAM CSV export (a file conventionally
-named `pv`, not checked in) via [scripts/import-pam-csv.js](scripts/import-pam-csv.js)
-(`npm run pam:import [inputCsvPath] [outputJsonPath]`). That script maps the CSV's verbose column headers
+`webapp/model/PAM.json` is generated from a semicolon-separated PAM CSV export, checked in as
+[pv](pv), via [scripts/import-pam-csv.ts](scripts/import-pam-csv.ts)
+(`npm run pam:import [inputCsvPath] [outputJsonPath]`), which `npm start`/`npm run build` (and friends)
+already run as a prerequisite step, so `webapp/model/PAM.json` (itself gitignored - see "Mock PAM data"
+below) never needs generating by hand. That script maps the CSV's verbose column headers
 (e.g. `"Restricted available (productive use allowed)"`, `"Readiness Date for SAP HANA"`) to short,
 stable JSON keys defined in its `FIELD_MAP`:
 
@@ -177,6 +180,27 @@ visible only when `product === "SAP UI5"` (see `ProductDetail.controller.ts`'s `
 A "product identity" for matching PAM entries against the user's own selection is the tuple
 `(version, name, product, line)`, joined with a `\u001f` separator (`createProductKey` in both
 `MyProducts` and `SupportStatus` controllers).
+
+### Mock PAM data
+
+The real SAP PAM export is customer-only data and must never be checked into this (public) repository or
+shipped in a build. [pv](pv) is therefore **fictional mock data**, not a real SAP export: every identity
+field (`Product Version`, `Official Name`, `Product`, `Product Line`, `Product Category`) has had its
+alphabetic words replaced with deterministically-generated fictional syllables (same real-world row
+count/structure, dates, and `Current Status` values — those aren't SAP-proprietary and were left as-is),
+and the support-portal `URL` column was replaced with a generic `https://www.sap.com/` link. If you need to
+regenerate it from scratch or extend it, there is no dedicated script for the substitution itself — it was
+a one-off transform; just hand-edit `pv` directly (same CSV shape as a real PAM export, see the field table
+above) or regenerate a fresh fictional dataset the same way. Never replace `pv` with a real customer PAM
+export and commit it.
+
+This also means `tests/testcases.md` and `tests/e2e/*.spec.ts` assert on this fictional data's specific
+product names/counts (e.g. "RA To/4CI 2025", "search for Nanemo") rather than real SAP product names — if
+`pv` ever changes, re-verify (or regenerate, see `npm run test:e2e:update-snapshots[:linux]`) the affected
+assertions and Playwright screenshot baselines the same way.
+
+`scripts/__tests__/fixtures/sample-pam.csv` (used only by `npm run test:scripts`) is a separate, smaller
+set of hand-written fictional rows, unrelated to the main `pv` file.
 
 ### i18n
 

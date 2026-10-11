@@ -108,9 +108,9 @@ test("6.4 - Open support portal", async ({ page }) => {
             page.locator(`${byId("productDetailPage")} button`, { hasText: "Open support portal" }).click()
         ]);
 
-        // The real SAP Support Portal URL redirects through an SSO login
-        // (accounts.sap.com) rather than loading support.sap.com directly,
-        // so just confirm a popup actually opened and navigated somewhere.
+        // The bundled (mock) PAM data uses a generic placeholder URL rather
+        // than a real SAP Support Portal link, so just confirm a popup
+        // actually opened and navigated somewhere.
         expect(popup.url()).toMatch(/^https:\/\//);
         await popup.close();
     });
@@ -120,8 +120,8 @@ test("6.4 - Open support portal", async ({ page }) => {
  * This test asserts on a specific product's support-end state, which
  * depends on today's date relative to its fixed eomm date (see
  * testcases.md's general test instructions, similar caveat as 1.10/1.11).
- * Verified live against the bundled PAM.json on 2026-10-10 and may need
- * re-verification if this suite starts failing.
+ * Verified live against the bundled (mock) PAM.json on 2026-10-11 and may
+ * need re-verification if this suite starts failing.
  */
 test("6.5 - Support status icon reflects approaching end of mainstream maintenance", async ({ page }) => {
     const searchFor = async (version: string): Promise<void> => {
@@ -131,8 +131,8 @@ test("6.5 - Support status icon reflects approaching end of mainstream maintenan
         await page.waitForTimeout(400);
     };
 
-    await test.step('Given the user searches for "SBOP BI PLATFORM 4.3" (mainstream maintenance ends within 6 months)', async () => {
-        await searchFor("SBOP BI PLATFORM 4.3");
+    await test.step('Given the user searches for "KI PO TEBADA 4.3" (mainstream maintenance ends within 6 months)', async () => {
+        await searchFor("KI PO TEBADA 4.3");
     });
 
     await thenStep(page, "Then the support status is shown as critical (error)", async () => {
@@ -144,8 +144,8 @@ test("6.5 - Support status icon reflects approaching end of mainstream maintenan
         await page.waitForTimeout(300);
     });
 
-    await test.step('And searches for "SAP SERVICE ASSET MANAGER 2505" (mainstream maintenance ends within 12 months)', async () => {
-        await searchFor("SAP SERVICE ASSET MANAGER 2505");
+    await test.step('And searches for "RA CENU FEFI TITU 2505" (mainstream maintenance ends within 12 months)', async () => {
+        await searchFor("RA CENU FEFI TITU 2505");
     });
 
     await thenStep(page, "Then the support status is shown as a warning", async () => {

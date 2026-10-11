@@ -236,11 +236,11 @@ export async function addFiveOwnProducts(page: Page): Promise<void> {
     await page.waitForTimeout(300);
 
     for (const version of [
-        "SAP NETWEAVER 7.5",
-        "SAP NETWEAVER 7.4",
-        "SAP S/4HANA 2021",
-        "SAP S/4HANA 2022",
-        "SAP S/4HANA 2025"
+        "RA NOGODU 7.5",
+        "RA NOGODU 7.4",
+        "RA To/4CI 2021",
+        "RA To/4CI 2022",
+        "RA To/4CI 2025"
     ]) {
         await addOwnProductByVersion(page, version);
     }

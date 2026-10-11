@@ -67,18 +67,18 @@ test("1.3 - Search", async ({ page }) => {
         expect(extractEntryCount(heading ?? "")).toBe(1554);
     });
 
-    await test.step('When the user searches for "HANA" in the table search field', async () => {
-        await page.locator(`${byId("globalSearch")} input`).fill("HANA");
+    await test.step('When the user searches for "Nanemo" in the table search field', async () => {
+        await page.locator(`${byId("globalSearch")} input`).fill("Nanemo");
         await page.waitForTimeout(300);
     });
 
-    await thenStep(page, "Then 305 entries are shown", async () => {
+    await thenStep(page, "Then 24 entries are shown", async () => {
         const heading = await activeHeading(page).textContent();
-        expect(extractEntryCount(heading ?? "")).toBe(305);
+        expect(extractEntryCount(heading ?? "")).toBe(24);
     });
 
-    await test.step('And the first entry is product version "ABAP FND 1709 ON HANA"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("ABAP FND 1709 ON HANA");
+    await test.step('And the first entry is product version "DU DA FEDURU 1210"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("DU DA FEDURU 1210");
     });
 
     await test.step("When the user clears the search field", async () => {
@@ -107,8 +107,8 @@ test("1.4 - Sort table rows", async ({ page }) => {
         await pollFirstRowCells(page, "pamTable").toContain("In customer-specific maintenance");
     });
 
-    await test.step('And the first entry is "SAP NETWEAVER 7.4"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("SAP NETWEAVER 7.4");
+    await test.step('And the first entry is "RA NOGODU 7.4"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("RA NOGODU 7.4");
     });
 });
 
@@ -127,8 +127,8 @@ test("1.5 - Sort table rows ascending", async ({ page }) => {
         await pollFirstRowCells(page, "pamTable").toContain("Unrestricted available");
     });
 
-    await test.step('And the first entry is "SAP S/4HANA 2025"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("SAP S/4HANA 2025");
+    await test.step('And the first entry is "RA To/4CI 2025"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("RA To/4CI 2025");
     });
 });
 
@@ -142,8 +142,8 @@ test("1.6 - Sort table, reset", async ({ page }) => {
         await page.waitForTimeout(300);
     });
 
-    await thenStep(page, 'Then the first entry in the table is "SAP DATA SERVICES 2027"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("SAP DATA SERVICES 2027");
+    await thenStep(page, 'Then the first entry in the table is "RA RE SODICU 2027"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("RA RE SODICU 2027");
     });
 
     await test.step("When the user clicks the reset icon in the sort dialog", async () => {
@@ -151,8 +151,8 @@ test("1.6 - Sort table, reset", async ({ page }) => {
         await page.waitForTimeout(300);
     });
 
-    await thenStep(page, 'Then the first entry in the table is "ABAP FND 1709 ON HANA"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("ABAP FND 1709 ON HANA");
+    await thenStep(page, 'Then the first entry in the table is "BA CO ROVEFI DIME MI 1.0"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("BA CO ROVEFI DIME MI 1.0");
     });
 });
 
@@ -237,8 +237,8 @@ test("1.9 - Hide additional filters", async ({ page }) => {
 /*
  * These two tests assert on live counts that depend on today's date (see
  * testcases.md's general instructions). The values below were verified live
- * against the bundled PAM.json on 2026-10-09 and may need re-verification
- * if this suite starts failing.
+ * against the bundled (mock) PAM.json on 2026-10-11 and may need
+ * re-verification if this suite starts failing.
  */
 test("1.10 - Filter by maintenance end date", async ({ page }) => {
     await test.step("Given the table shows 1554 entries", async () => {
@@ -256,8 +256,8 @@ test("1.10 - Filter by maintenance end date", async ({ page }) => {
         expect(extractEntryCount(heading ?? "")).toBe(143);
     });
 
-    await test.step('And the first entry is "ACCNTSUBSTAUTOM_ADV 7.38.0"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("ACCNTSUBSTAUTOM_ADV 7.38.0");
+    await test.step('And the first entry is "BI KI NA 6.0.0"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("BI KI NA 6.0.0");
     });
 });
 
@@ -277,8 +277,8 @@ test("1.11 - Filter and mark support end date", async ({ page }) => {
         expect(extractEntryCount(heading ?? "")).toBe(154);
     });
 
-    await test.step('And the first entry is "ACCNTSUBSTAUTOM_ADV 7.38.0"', async () => {
-        await pollFirstCell(page, "pamTable").toBe("ACCNTSUBSTAUTOM_ADV 7.38.0");
+    await test.step('And the first entry is "BI KI NA 6.0.0"', async () => {
+        await pollFirstCell(page, "pamTable").toBe("BI KI NA 6.0.0");
     });
 
     await test.step('When the user selects "3 months" from "Mark entries"', async () => {
@@ -294,10 +294,10 @@ test("1.11 - Filter and mark support end date", async ({ page }) => {
         }
     });
 
-    await test.step('And entry "FIONEER VAM 1.0" is not marked red', async () => {
+    await test.step('And entry "PUCO GE 1.0" is not marked red', async () => {
         const rows = tableDataRows(page, "pamTable");
         const texts = await rows.allInnerTexts();
-        const index = texts.findIndex((text) => text.includes("FIONEER VAM 1.0"));
+        const index = texts.findIndex((text) => text.includes("PUCO GE 1.0"));
 
         expect(index).toBeGreaterThanOrEqual(0);
         await expect(rows.nth(index).locator(".sapMLIBHighlight")).toHaveCount(0);
@@ -306,7 +306,7 @@ test("1.11 - Filter and mark support end date", async ({ page }) => {
 
 test("1.12 - Full reset", async ({ page }) => {
     await test.step("Given the user has entered a search term, set at least one filter and changed the sort order", async () => {
-        await page.locator(`${byId("globalSearch")} input`).fill("HANA");
+        await page.locator(`${byId("globalSearch")} input`).fill("Nanemo");
         await selectOption(page, "filterCurrentStatus", "Unrestricted available");
         await selectOption(page, "sortField", "Official Name");
         await page.locator(byId("sortAscending")).click();
@@ -375,8 +375,8 @@ test('1.14 - Filter by product line and "Reset filters"', async ({ page }) => {
         await page.waitForTimeout(300);
     });
 
-    await test.step('And filters by product line "S/4HANA"', async () => {
-        await page.locator(`${byId("filterProductLine")} input`).fill("S/4HANA");
+    await test.step('And filters by product line "To/4CI"', async () => {
+        await page.locator(`${byId("filterProductLine")} input`).fill("To/4CI");
         await page.waitForTimeout(300);
     });
 
@@ -391,7 +391,7 @@ test('1.14 - Filter by product line and "Reset filters"', async ({ page }) => {
 
         for (let i = 0; i < visibleCount; i++) {
             const text = await rows.nth(i).innerText();
-            expect(text).toContain("S/4HANA");
+            expect(text).toContain("To/4CI");
         }
     });
 
