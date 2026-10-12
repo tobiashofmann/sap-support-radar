@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * Renders a self-contained local HTML report from a CycloneDX SBOM
- * (sbom.json, see the "sbom" npm script). Written in-house rather than using
- * a third-party SBOM-to-HTML viewer because none of the ones evaluated show
+ * Renders a self-contained local HTML report from a CycloneDX SBOM (see the
+ * "sbom:dev"/"sbom:prod" npm scripts). Written in-house rather than using a
+ * third-party SBOM-to-HTML viewer because none of the ones evaluated show
  * a license summary table, and their bundled templates aren't extensible.
  *
- * Usage: node scripts/sbom-report.ts [inputSbomPath] [outputHtmlPath]
- * Defaults: inputSbomPath = "sbom.json", outputHtmlPath = "sbom-report.html"
+ * Usage: node scripts/sbom-report.ts [inputSbomPath] [outputHtmlPath] [reportLabel]
+ * Defaults: inputSbomPath = "sbom.json", outputHtmlPath = "sbom-report.html",
+ * reportLabel = "" (shown in the page heading/title to distinguish the "dev"
+ * report, which includes devDependencies, from the "prod" one, which only
+ * covers what's actually shipped - see the "sbom:report:dev"/"sbom:report:prod"
+ * npm scripts).
  */
 
 import fs from "node:fs";
@@ -47,6 +51,7 @@ interface CycloneDxSbom {
 
 const inputPath = path.resolve(process.argv[2] || "sbom.json");
 const outputPath = path.resolve(process.argv[3] || "sbom-report.html");
+const reportLabel = process.argv[4] || "";
 
 if (!fs.existsSync(inputPath)) {
 	console.error(`No SBOM found at ${inputPath} - run "npm run sbom" first.`);
@@ -282,13 +287,53 @@ const licenseSummaryRows = licenseSummary
 	})
 	.join("");
 
+/** Renders a component's name as a link to its repo/homepage, if the SBOM lists one. */
+function componentNameCell(component: CycloneDxComponent): string {
+	const repoUrl = (component.externalReferences || [])
+		.find((ref) => ref.type === "vcs" || ref.type === "website")?.url;
+
+	return repoUrl
+		? `<a href="${escapeHtml(repoUrl)}">${escapeHtml(component.name)}</a>`
+		: escapeHtml(component.name);
+}
+
+/**
+ * For each flagged license, the components that declare it - rendered directly
+ * under the warning banner so the violation is immediately actionable, not just
+ * a label the reader has to go search for in the full component list below.
+ */
+const forbiddenLicenseDetails = forbiddenLicenses
+	.map((entry) => {
+		const affectedComponents = components
+			.filter((component) => componentLicenses(component).includes(entry.label))
+			.sort((a, b) => a.name.localeCompare(b.name));
+
+		const rows = affectedComponents
+			.map((component) => `
+        <tr>
+            <td>${componentNameCell(component)}</td>
+            <td>${escapeHtml(component.version || "")}</td>
+        </tr>`)
+			.join("");
+
+		return `
+<table class="forbidden-license-detail">
+    <thead><tr><th colspan="2">${escapeHtml(entry.label)} &mdash; ${affectedComponents.length} package${affectedComponents.length === 1 ? "" : "s"}</th></tr>
+    <tr><th>Package</th><th>Version</th></tr></thead>
+    <tbody>${rows}
+    </tbody>
+</table>`;
+	})
+	.join("");
+
 const licenseWarningBanner = forbiddenLicenses.length > 0
 	? `
 <div class="banner banner-bad">
     <strong>${forbiddenLicenses.length} license${forbiddenLicenses.length === 1 ? "" : "s"} flagged</strong>
     - not OSI-approved and/or copyleft:
     ${forbiddenLicenses.map((entry) => escapeHtml(entry.label)).join(", ")}
-</div>`
+</div>
+${forbiddenLicenseDetails}`
 	: `
 <div class="banner banner-ok">
     <strong>All ${licenseSummary.length} licenses are OSI-approved and permissive.</strong>
@@ -299,15 +344,10 @@ const componentRows = components
 	.sort((a, b) => a.name.localeCompare(b.name))
 	.map((component) => {
 		const licenses = componentLicenses(component).join(", ");
-		const repoUrl = (component.externalReferences || [])
-			.find((ref) => ref.type === "vcs" || ref.type === "website")?.url;
-		const nameCell = repoUrl
-			? `<a href="${escapeHtml(repoUrl)}">${escapeHtml(component.name)}</a>`
-			: escapeHtml(component.name);
 
 		return `
         <tr data-name="${escapeHtml(component.name.toLowerCase())}" data-license="${escapeHtml(licenses.toLowerCase())}">
-            <td>${nameCell}</td>
+            <td>${componentNameCell(component)}</td>
             <td>${escapeHtml(component.version || "")}</td>
             <td>${escapeHtml(licenses)}</td>
         </tr>`;
@@ -317,12 +357,13 @@ const componentRows = components
 const projectName = sbom.metadata?.component?.name || "project";
 const projectVersion = sbom.metadata?.component?.version || "";
 const generatedAt = new Date().toISOString();
+const titleSuffix = reportLabel ? ` (${reportLabel})` : "";
 
 const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>SBOM report - ${escapeHtml(projectName)}</title>
+<title>SBOM report - ${escapeHtml(projectName)}${escapeHtml(titleSuffix)}</title>
 <style>
     body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; color: #1a1a1a; }
     h1 { margin-bottom: 0.25rem; }
@@ -347,10 +388,12 @@ const html = `<!doctype html>
     .badge-bad { background: #fdecea; color: #8e1e13; }
     .badge-unknown { background: #f0f0f0; color: #555; }
     .row-forbidden { background: #fff8f7; }
+    .forbidden-license-detail { max-width: 56rem; margin-top: -0.5rem; }
+    .forbidden-license-detail th[colspan] { background: #fdecea; color: #8e1e13; }
 </style>
 </head>
 <body>
-<h1>Software Bill of Materials</h1>
+<h1>Software Bill of Materials${reportLabel ? ` &mdash; ${escapeHtml(reportLabel)}` : ""}</h1>
 <p class="meta">${escapeHtml(projectName)}${projectVersion ? ` @ ${escapeHtml(projectVersion)}` : ""} &middot; ${components.length} components &middot; generated ${generatedAt}</p>
 
 <h2>Licenses in use</h2>

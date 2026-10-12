@@ -26,7 +26,8 @@ Lay out the deployed site as:
 - **`/app/`** — the OpenUI5 app build, with `index-cdn.html` copied to `index.html` as the entry point
   (unchanged from before, just relocated). It runs against the bundled sample `PAM.json`, since per
   [ADR 0006](/adr/0006-user-supplied-pam-data) real PAM data is never bundled or published.
-- **`/reports/coverage/`, `/reports/allure/`, `/reports/playwright/`, `/reports/sbom.html`** — the CI
+- **`/reports/coverage/`, `/reports/allure/`, `/reports/playwright/`, `/reports/sbom-dev.html`,
+  `/reports/sbom-prod.html`** — the CI
   quality reports, linked from [Reports](/reports).
 
 The workflow builds each piece in its own job (`build-app`, `build-docs`, `test-and-reports`), uploads each

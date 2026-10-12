@@ -4,6 +4,7 @@ coverage
 report
 .nyc_output
 webapp/model/PAM.json
+docs/.DS_Store
 
 # Logs
 logs
@@ -43,5 +44,7 @@ docs/.vitepress/cache
 /allure-report/
 
 # SBOM (regenerate via `npm run sbom` / `npm run sbom:report`)
-sbom.json
-sbom-report.html
+sbom.dev.json
+sbom.prod.json
+sbom-report.dev.html
+sbom-report.prod.html

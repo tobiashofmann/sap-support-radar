@@ -11,7 +11,8 @@ built by VitePress itself.
 | [Code coverage](/reports/coverage/) | Istanbul/nyc HTML coverage report for the e2e test run | `npm run test:e2e:coverage` — see [Build toolchain → Code coverage](/build-toolchain#code-coverage) |
 | [Allure report](/reports/allure/) | Step-by-step e2e test results, trend graphs across deployments, categorized failures | `npm run test:e2e:allure:generate` — see [Build toolchain → Allure report](/build-toolchain#allure-report) |
 | [Playwright report](/reports/playwright/) | Playwright's own interactive test report, with traces/screenshots per test | Playwright's built-in `html` reporter — see [Build toolchain → Test reports](/build-toolchain#test-reports) |
-| [SBOM report](/reports/sbom.html) | Dependency/license overview (CycloneDX), flags non-OSI-approved or copyleft licenses | `npm run sbom:report` — see [Build toolchain → Software Bill of Materials](/build-toolchain#software-bill-of-materials-sbom) |
+| [SBOM report (prod)](/reports/sbom-prod.html) | Dependency/license overview (CycloneDX) for runtime dependencies only - what's actually shipped | `npm run sbom:report:prod` — see [Build toolchain → Software Bill of Materials](/build-toolchain#software-bill-of-materials-sbom) |
+| [SBOM report (dev)](/reports/sbom-dev.html) | Same, but for the full dependency tree including devDependencies (build/test tooling) | `npm run sbom:report:dev` — see [Build toolchain → Software Bill of Materials](/build-toolchain#software-bill-of-materials-sbom) |
 
 ## The app itself
 

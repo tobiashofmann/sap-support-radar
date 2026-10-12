@@ -157,7 +157,8 @@ jobs:
           cp -r coverage/. site-reports/coverage/
           cp -r allure-report/. site-reports/allure/
           cp -r playwright-report/. site-reports/playwright/
-          cp sbom-report.html site-reports/sbom.html
+          cp sbom-report.dev.html site-reports/sbom-dev.html
+          cp sbom-report.prod.html site-reports/sbom-prod.html
 
       - uses: actions/upload-artifact@v4
         with:
@@ -173,7 +174,8 @@ jobs:
           path: |
             test-results/junit.xml
             test-results/sonar-report.xml
-            sbom.json
+            sbom.dev.json
+            sbom.prod.json
           retention-days: 30
           if-no-files-found: ignore
 

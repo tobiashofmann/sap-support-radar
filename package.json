@@ -5,7 +5,7 @@
   "author": "Tobias Hofmann",
   "license": "Apache-2.0",
   "scripts": {
-    "clean": "rimraf dist coverage .nyc_output test-results playwright-report allure-results allure-report sbom.json sbom-report.html",
+    "clean": "rimraf dist coverage .nyc_output test-results playwright-report allure-results allure-report sbom.dev.json sbom.prod.json sbom-report.dev.html sbom-report.prod.html",
     "start-cdn": "npm run pam:import && ui5 serve --port 8080 -o index-cdn.html",
     "start-coverage": "npm run pam:import && ui5 serve --port 8080 --config ui5-coverage.yaml",
     "start:dist": "npm start -- --config ui5-dist.yaml",
@@ -38,8 +38,12 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "sbom": "cyclonedx-npm --output-format JSON --output-file sbom.json",
-    "sbom:report": "npm run sbom && ts-node -P scripts/tsconfig.json scripts/sbom-report.ts"
+    "sbom:dev": "cyclonedx-npm --output-format JSON --output-file sbom.dev.json",
+    "sbom:prod": "cyclonedx-npm --omit dev --output-format JSON --output-file sbom.prod.json",
+    "sbom": "npm run sbom:dev && npm run sbom:prod",
+    "sbom:report:dev": "ts-node -P scripts/tsconfig.json scripts/sbom-report.ts sbom.dev.json sbom-report.dev.html \"Development - includes devDependencies\"",
+    "sbom:report:prod": "ts-node -P scripts/tsconfig.json scripts/sbom-report.ts sbom.prod.json sbom-report.prod.html \"Production - runtime dependencies only\"",
+    "sbom:report": "npm run sbom && npm run sbom:report:dev && npm run sbom:report:prod"
   },
   "devDependencies": {
     "@bdellegrazie/playwright-sonar-reporter": "^0.5.2",

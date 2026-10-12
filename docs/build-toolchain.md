@@ -110,20 +110,33 @@ clash). Once the full suite has run, `nyc report` merges every one of those raw 
 ## Software Bill of Materials (SBOM)
 
 ```sh
-npm run sbom          # cyclonedx-npm -> sbom.json
-npm run sbom:report    # sbom.json + sbom-report.html (human-readable)
+npm run sbom           # sbom:dev + sbom:prod -> sbom.dev.json, sbom.prod.json
+npm run sbom:dev        # cyclonedx-npm (full tree, incl. devDependencies) -> sbom.dev.json
+npm run sbom:prod       # cyclonedx-npm --omit dev (runtime only) -> sbom.prod.json
+npm run sbom:report     # generates both SBOMs + both HTML reports
+npm run sbom:report:dev  # sbom.dev.json + sbom-report.dev.html (human-readable)
+npm run sbom:report:prod # sbom.prod.json + sbom-report.prod.html (human-readable)
 ```
 
-`npm run sbom` generates a [CycloneDX](https://cyclonedx.org) SBOM (`sbom.json`) of the project's full npm
-dependency tree via `@cyclonedx/cyclonedx-npm` — a standard, tool-agnostic format consumable by
-vulnerability scanners and license-compliance tooling.
+`npm run sbom:dev`/`sbom:prod` each generate a [CycloneDX](https://cyclonedx.org) SBOM via
+`@cyclonedx/cyclonedx-npm` — a standard, tool-agnostic format consumable by vulnerability scanners and
+license-compliance tooling. Two separate SBOMs are produced because they answer different questions:
+`sbom.dev.json` covers the project's full npm dependency tree (including devDependencies - lint/test/build
+tooling, never shipped to the browser), while `sbom.prod.json` (`--omit dev`) covers only runtime
+dependencies, i.e. what's actually shipped. This app has no npm `dependencies` at all (see "No backend —
+everything is client-side JSON" in the project's `CLAUDE.md`; the UI5 framework itself is loaded from the
+CDN or `node_modules` devDependencies, never declared as a runtime npm dependency), so `sbom.prod.json`
+is expected to list zero third-party components — that's the correct, meaningful answer for this app, not
+a tooling gap.
 
-`npm run sbom:report` additionally renders `sbom-report.html`, a self-contained local HTML report
-generated in-house by `scripts/sbom-report.ts`. It was written in-house (rather than adopting a
-third-party SBOM viewer) specifically because the evaluated alternatives didn't produce a license summary
-table and weren't easily extensible. The script normalizes each component's CycloneDX `licenses[]` entries
-(which can appear as an SPDX id, a free-text name, or an SPDX expression) into a single readable label via
-the `spdx-license-list` package, and de-duplicates repeated license entries per component.
+`npm run sbom:report:dev`/`sbom:report:prod` additionally render `sbom-report.dev.html`/
+`sbom-report.prod.html`, self-contained local HTML reports generated in-house by `scripts/sbom-report.ts`
+(same script, run twice with different input/output paths and a report label). It was written in-house
+(rather than adopting a third-party SBOM viewer) specifically because the evaluated alternatives didn't
+produce a license summary table and weren't easily extensible. The script normalizes each component's
+CycloneDX `licenses[]` entries (which can appear as an SPDX id, a free-text name, or an SPDX expression)
+into a single readable label via the `spdx-license-list` package, and de-duplicates repeated license
+entries per component.
 
 ## Test reports
 
@@ -159,5 +172,5 @@ npm run clean
 ```
 
 Removes every generated artifact described on this page in one step: `dist/`, `coverage/`,
-`.nyc_output/`, `test-results/`, `playwright-report/`, `allure-results/`, `allure-report/`, `sbom.json`,
-`sbom-report.html`.
+`.nyc_output/`, `test-results/`, `playwright-report/`, `allure-results/`, `allure-report/`,
+`sbom.dev.json`, `sbom.prod.json`, `sbom-report.dev.html`, `sbom-report.prod.html`.

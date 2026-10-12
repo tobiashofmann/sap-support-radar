@@ -109,7 +109,7 @@ npx playwright install --with-deps chromium
 # 7. End-to-end tests + code coverage report (coverage/)
 npm run test:e2e:coverage
 
-# 8. Remaining reports: SBOM (sbom-report.html) and Allure (allure-report/)
+# 8. Remaining reports: SBOM (sbom-report.dev.html / sbom-report.prod.html) and Allure (allure-report/)
 npm run sbom:report
 npm run test:e2e:allure:generate
 
@@ -121,7 +121,7 @@ npm run start:dist
 
 See [Build toolchain](/build-toolchain) for what each of these commands actually does, the full list of
 available scripts, and where each report ends up (`coverage/index.html`, `allure-report/index.html`,
-`playwright-report/index.html`, `sbom-report.html`).
+`playwright-report/index.html`, `sbom-report.dev.html`/`sbom-report.prod.html`).
 
 Once running, use the **"Upload PAM.json"** / **"Upload my products"** buttons in the toolbar to load a
 different export at any time without re-running `pam:import` — see [App workflow & pages](/workflow) for
